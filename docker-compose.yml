@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  node:
+    container_name: node
+    image: node:19-alpine3.17
+    working_dir: /app
+    tty: true
+    volumes:
+      - .:/app
+    ports:
+      - 5173:5173
+    restart: unless-stopped
