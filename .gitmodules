@@ -1,0 +1,3 @@
+[submodule "src/lib/assets"]
+	path = src/lib/assets
+	url = https://github.com/plant-tracker/assets.git
