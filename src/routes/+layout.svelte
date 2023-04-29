@@ -1,49 +1,34 @@
 <script lang="ts">
-	// The ordering of these imports is critical to your app working properly
 	import '@skeletonlabs/skeleton/themes/theme-hamlindigo.css';
-	// If you have source.organizeImports set to true in VSCode, then it will auto change this ordering
 	import '@skeletonlabs/skeleton/styles/all.css';
-	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
-	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
+
+	import { AppShell, AppRail, AppRailTile, LightSwitch } from '@skeletonlabs/skeleton';
+	import { Home3Line, PlantLine, AddBoxLine, Settings2Line, LogoutBoxLine } from 'svelte-remixicon';
+	import Icon from '$lib/components/AppRailIcon.svelte';
+	import { writable, type Writable } from 'svelte/store';
+	import logo from '$lib/assets/icons/logo.png';
+
+	const storeValue: Writable<number> = writable(0);
 </script>
 
-<!-- App Shell -->
 <AppShell>
-	<svelte:fragment slot="header">
-		<!-- App Bar -->
-		<AppBar>
-			<svelte:fragment slot="lead">
-				<strong class="text-xl uppercase">Skeleton</strong>
-			</svelte:fragment>
+	<svelte:fragment slot="sidebarLeft">
+		<AppRail selected={storeValue}>
+			<img alt="Plant Tracker logo" src={logo} slot="lead" />
+			<AppRailTile label="Home" value={0}><Icon src={Home3Line} /></AppRailTile>
+			<AppRailTile label="Plants" value={1}><Icon src={PlantLine} /></AppRailTile>
+			<AppRailTile label="Add plant" value={2}><Icon src={AddBoxLine} /></AppRailTile>
+
 			<svelte:fragment slot="trail">
-				<a
-					class="btn btn-sm variant-ghost-surface"
-					href="https://discord.gg/EXqV7W8MtY"
-					target="_blank"
-					rel="noreferrer"
-				>
-					Discord
-				</a>
-				<a
-					class="btn btn-sm variant-ghost-surface"
-					href="https://twitter.com/SkeletonUI"
-					target="_blank"
-					rel="noreferrer"
-				>
-					Twitter
-				</a>
-				<a
-					class="btn btn-sm variant-ghost-surface"
-					href="https://github.com/skeletonlabs/skeleton"
-					target="_blank"
-					rel="noreferrer"
-				>
-					GitHub
-				</a>
+				<div class="flex justify-center items-center w-full aspect-square space-y-1.5">
+					<LightSwitch />
+				</div>
+				<AppRailTile label="Settings" value={3}><Icon src={Settings2Line} /></AppRailTile>
+				<AppRailTile label="Logout" value={4}><Icon src={LogoutBoxLine} /></AppRailTile>
 			</svelte:fragment>
-		</AppBar>
-	</svelte:fragment>
-	<!-- Page Route Content -->
+		</AppRail></svelte:fragment
+	>
+
 	<slot />
 </AppShell>
