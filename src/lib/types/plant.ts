@@ -8,7 +8,7 @@ export interface Plant {
 	temperature: Temperature;
 	light_levels: LightLevel;
 	photo_url: string;
-	created: Date;
+	created: any;
 }
 
 enum Humidity {

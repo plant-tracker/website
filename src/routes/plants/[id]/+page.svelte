@@ -17,7 +17,7 @@
 			<h3>General</h3>
 			{#if $plant}
 				<PlantCard {id} plant={$plant} />
-				<span> Creation date: {$plant.created}</span>
+				<span> Creation date: {$plant.created.toDate().toDateString()}</span>
 				<div class="flex flex-col gap-2">
 					<h4>Preferences</h4>
 					<PlantPreferencesCard plant={$plant} />
