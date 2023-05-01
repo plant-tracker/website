@@ -23,7 +23,10 @@
 
 	const user = userStore(auth);
 
-	storeCurrentUrl.set($page.url.pathname);
+	$: {
+		const segments = $page.url.pathname.split('/');
+		storeCurrentUrl.set('/' + segments[1]);
+	}
 </script>
 
 {#if $user}
@@ -47,7 +50,7 @@
 					<AppRailTile label="Settings" value={'/settings'}
 						><Icon src={Settings2Line} /></AppRailTile
 					>
-					<AppRailTile label="Logout" on:click={() => signOut(auth)} value={'/logout'}
+					<AppRailTile label="Logout" on:click={() => signOut(auth)}
 						><Icon src={LogoutBoxLine} /></AppRailTile
 					>
 				</svelte:fragment>
