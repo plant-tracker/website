@@ -23,8 +23,11 @@
 
 	const user = userStore(auth);
 
-	$: {
-		const segments = $page.url.pathname.split('/');
+	const pathname = $page.url.pathname;
+	if (pathname.startsWith('/plants/add')) {
+		storeCurrentUrl.set(pathname);
+	} else {
+		const segments = pathname.split('/');
 		storeCurrentUrl.set('/' + segments[1]);
 	}
 </script>
