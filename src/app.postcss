@@ -1,2 +1,14 @@
-/*place global styles here */
-html, body { @apply h-full overflow-hidden; }
+@font-face {
+	font-family: 'RobotoFlex';
+	src: url('/fonts/RobotoFlex-VariableFont_GRAD,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.ttf');
+}
+
+html,
+body {
+	@apply h-full overflow-hidden;
+}
+
+:root {
+	--theme-font-family-base: 'RobotoFlex', sans-serif;
+	--theme-font-family-heading: 'RobotoFlex', sans-serif;
+}
