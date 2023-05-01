@@ -22,8 +22,8 @@
 </AppBar>
 <div class="container mx-auto max-w-screen-lg p-4 md:p-10">
 	<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-center items-center">
-		{#each $userPlants as plant}
-			<PlantCard {plant} />
+		{#each $userPlants as plant (plant.id)}
+			<PlantCard id={plant.id} {plant} />
 		{/each}
 	</div>
 </div>

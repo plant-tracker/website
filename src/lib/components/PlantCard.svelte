@@ -2,10 +2,12 @@
 	import type { Plant } from '$lib/types';
 	import { Avatar } from '@skeletonlabs/skeleton';
 
+	export let id: string;
 	export let plant: Plant;
 </script>
 
-<div
+<a
+	href="/plants/{id}"
 	class="card card-hover flex flex-row items-center bg-neutral-100 shadow-lg rounded-lg overflow-hidden h-full"
 >
 	<div class="w-1/3 bg-cover bg-center p-3">
@@ -24,4 +26,4 @@
 			<p>{plant.location}</p>
 		</div>
 	</div>
-</div>
+</a>
