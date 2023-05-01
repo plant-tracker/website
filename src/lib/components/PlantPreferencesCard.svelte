@@ -5,7 +5,7 @@
 	export let plant: Plant;
 </script>
 
-<section class="p-4 flex flex-row flex-wrap items-center justify-center gap-3">
+<section class="flex flex-row flex-wrap items-center justify-center gap-3">
 	<div class="badge variant-filled flex-1 text-lg !bg-blue-400 !text-black">
 		<DropLine />
 		<span>{plant.humidity}</span>
