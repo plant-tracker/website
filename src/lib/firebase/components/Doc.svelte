@@ -4,7 +4,7 @@
 
 	interface $$Slots {
 		default: { data: any; ref: DocumentReference | null };
-		loading: {};
+		loading: object;
 	}
 
 	export let ref: string | DocumentReference;

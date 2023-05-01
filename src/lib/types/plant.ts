@@ -1,3 +1,5 @@
+import type { Timestamp } from 'firebase/firestore';
+
 export interface Plant {
 	id: string;
 	name: string;
@@ -8,7 +10,7 @@ export interface Plant {
 	temperature: Temperature;
 	light_levels: LightLevel;
 	photo_url: string;
-	created: any;
+	created: Timestamp;
 }
 
 enum Humidity {

@@ -1,9 +1,8 @@
 <script>
 	import { FirebaseApp, User, firestore, auth } from '$lib/firebase';
-	import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+	import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 	const provider = new GoogleAuthProvider();
-	//const user = userStore(auth);
 </script>
 
 <FirebaseApp {auth} {firestore}>
