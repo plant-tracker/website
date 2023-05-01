@@ -20,16 +20,13 @@
 	import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 	import { storeCurrentUrl } from '$lib/stores/stores';
 	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
 
 	const user = userStore(auth);
 
-	const pathname = $page.url.pathname;
-	if (pathname.startsWith('/plants/add')) {
-		storeCurrentUrl.set(pathname);
-	} else {
-		const segments = pathname.split('/');
-		storeCurrentUrl.set('/' + segments[1]);
-	}
+	onMount(() => {
+		storeCurrentUrl.set($page.url.pathname);
+	});
 </script>
 
 {#if $user}
