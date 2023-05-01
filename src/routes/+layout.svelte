@@ -31,9 +31,14 @@
 		<svelte:fragment slot="sidebarLeft">
 			<AppRail selected={storeCurrentUrl}>
 				<img alt="Plant Tracker logo" src={logo_smile} slot="lead" />
-				<AppRailTile label="Home" value={'/'}><Icon src={Home3Line} /></AppRailTile>
-				<AppRailTile label="Plants" value={'/plants'}><Icon src={PlantLine} /></AppRailTile>
-				<AppRailTile label="Add plant" value={'/plants/add'}><Icon src={AddBoxLine} /></AppRailTile>
+				<AppRailTile tag="a" href="/" label="Home" value={'/'}><Icon src={Home3Line} /></AppRailTile
+				>
+				<AppRailTile tag="a" href="/plants" label="Plants" value={'/plants'}
+					><Icon src={PlantLine} /></AppRailTile
+				>
+				<AppRailTile tag="a" href="/plants/add" label="Add plant" value={'/plants/add'}
+					><Icon src={AddBoxLine} /></AppRailTile
+				>
 
 				<svelte:fragment slot="trail">
 					<div class="flex justify-center items-center w-full aspect-square space-y-1.5">
