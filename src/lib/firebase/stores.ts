@@ -1,8 +1,8 @@
-import { writable } from 'svelte/store'
-import { doc, collection, collectionGroup, onSnapshot } from 'firebase/firestore'
-import type { Firestore, Query, CollectionReference, DocumentReference } from 'firebase/firestore'
-import { onAuthStateChanged, type Auth } from 'firebase/auth'
-import type { User } from 'firebase/auth'
+import { writable } from 'svelte/store';
+import { doc, collection, collectionGroup, onSnapshot } from 'firebase/firestore';
+import type { Firestore, Query, CollectionReference, DocumentReference } from 'firebase/firestore';
+import { onAuthStateChanged, type Auth } from 'firebase/auth';
+import type { User } from 'firebase/auth';
 
 /**
  * @param  {Firestore} firestore firebase firestore instance
@@ -11,33 +11,33 @@ import type { User } from 'firebase/auth'
  * @returns a store with realtime updates on document data
  */
 export function docStore<T>(firestore: Firestore, ref: string | DocumentReference, startWith?: T) {
-  let unsubscribe: () => void
+	let unsubscribe: () => void;
 
-  if (!firestore || !globalThis.window) {
-    console.warn('Firestore is not initialized or not in browser')
-    const { subscribe } = writable(startWith)
-    return {
-      subscribe,
-      ref: null,
-      id: '',
-    }
-  }
+	if (!firestore || !globalThis.window) {
+		console.warn('Firestore is not initialized or not in browser');
+		const { subscribe } = writable(startWith);
+		return {
+			subscribe,
+			ref: null,
+			id: ''
+		};
+	}
 
-  const docRef = typeof ref === 'string' ? doc(firestore, ref) : ref
+	const docRef = typeof ref === 'string' ? doc(firestore, ref) : ref;
 
-  const { subscribe } = writable<T | null>(startWith, (set) => {
-    unsubscribe = onSnapshot(docRef, (snapshot) => {
-      set((snapshot.data() as T) ?? null)
-    })
+	const { subscribe } = writable<T | null>(startWith, (set) => {
+		unsubscribe = onSnapshot(docRef, (snapshot) => {
+			set((snapshot.data() as T) ?? null);
+		});
 
-    return () => unsubscribe()
-  })
+		return () => unsubscribe();
+	});
 
-  return {
-    subscribe,
-    ref: docRef,
-    id: docRef.id,
-  }
+	return {
+		subscribe,
+		ref: docRef,
+		id: docRef.id
+	};
 }
 
 /**
@@ -47,38 +47,38 @@ export function docStore<T>(firestore: Firestore, ref: string | DocumentReferenc
  * @returns a store with realtime updates on collection group data
  */
 export function collectionGroupStore<T>(
-  firestore: Firestore,
-  ref: string | Query,
-  startWith: T[] = []
+	firestore: Firestore,
+	ref: string | Query,
+	startWith: T[] = []
 ) {
-  let unsubscribe: () => void
+	let unsubscribe: () => void;
 
-  if (!firestore || !globalThis.window) {
-    console.warn('Firestore is not initialized or not in browser')
-    const { subscribe } = writable(startWith)
-    return {
-      subscribe,
-      ref: null,
-    }
-  }
+	if (!firestore || !globalThis.window) {
+		console.warn('Firestore is not initialized or not in browser');
+		const { subscribe } = writable(startWith);
+		return {
+			subscribe,
+			ref: null
+		};
+	}
 
-  const colRef = typeof ref === 'string' ? collectionGroup(firestore, ref) : ref
+	const colRef = typeof ref === 'string' ? collectionGroup(firestore, ref) : ref;
 
-  const { subscribe } = writable(startWith, (set) => {
-    unsubscribe = onSnapshot(colRef, (snapshot) => {
-      const data = snapshot.docs.map((s) => {
-        return { id: s.id, ref: s.ref, ...s.data() } as T
-      })
-      set(data)
-    })
+	const { subscribe } = writable(startWith, (set) => {
+		unsubscribe = onSnapshot(colRef, (snapshot) => {
+			const data = snapshot.docs.map((s) => {
+				return { id: s.id, ref: s.ref, ...s.data() } as T;
+			});
+			set(data);
+		});
 
-    return () => unsubscribe()
-  })
+		return () => unsubscribe();
+	});
 
-  return {
-    subscribe,
-    ref: colRef,
-  }
+	return {
+		subscribe,
+		ref: colRef
+	};
 }
 
 /**
@@ -88,65 +88,65 @@ export function collectionGroupStore<T>(
  * @returns a store with realtime updates on collection data
  */
 export function collectionStore<T>(
-  firestore: Firestore,
-  ref: string | Query | CollectionReference,
-  startWith: T[] = []
+	firestore: Firestore,
+	ref: string | Query | CollectionReference,
+	startWith: T[] = []
 ) {
-  let unsubscribe: () => void
+	let unsubscribe: () => void;
 
-  if (!firestore || !globalThis.window) {
-    console.warn('Firestore is not initialized or not in browser')
-    const { subscribe } = writable(startWith)
-    return {
-      subscribe,
-      ref: null,
-    }
-  }
+	if (!firestore || !globalThis.window) {
+		console.warn('Firestore is not initialized or not in browser');
+		const { subscribe } = writable(startWith);
+		return {
+			subscribe,
+			ref: null
+		};
+	}
 
-  const colRef = typeof ref === 'string' ? collection(firestore, ref) : ref
+	const colRef = typeof ref === 'string' ? collection(firestore, ref) : ref;
 
-  const { subscribe } = writable(startWith, (set) => {
-    unsubscribe = onSnapshot(colRef, (snapshot) => {
-      const data = snapshot.docs.map((s) => {
-        return { id: s.id, ref: s.ref, ...s.data() } as T
-      })
-      set(data)
-    })
+	const { subscribe } = writable(startWith, (set) => {
+		unsubscribe = onSnapshot(colRef, (snapshot) => {
+			const data = snapshot.docs.map((s) => {
+				return { id: s.id, ref: s.ref, ...s.data() } as T;
+			});
+			set(data);
+		});
 
-    return () => unsubscribe()
-  })
+		return () => unsubscribe();
+	});
 
-  return {
-    subscribe,
-    ref: colRef,
-  }
+	return {
+		subscribe,
+		ref: colRef
+	};
 }
 /**
  * @param  {Auth} auth firebase auth instance
  * @returns a store with the current firebase user
  */
 export function userStore(auth: Auth) {
-  let unsubscribe: () => void
+	let unsubscribe: () => void;
 
-  if (!auth || !globalThis.window) {
-    console.warn('Auth is not initialized or not in browser')
-    const { subscribe } = writable(undefined)
-    return {
-      subscribe,
-    }
-  }
+	if (!auth || !globalThis.window) {
+		console.warn('Auth is not initialized or not in browser');
+		const { subscribe } = writable(undefined);
+		return {
+			subscribe
+		};
+	}
 
-  const { subscribe } = writable<User | null | undefined>(auth?.currentUser ?? undefined, (set) => {
-    unsubscribe = onAuthStateChanged(auth, (user) => {
-      set(user)
-    })
+	const { subscribe } = writable<User | null | undefined>(auth?.currentUser ?? undefined, (set) => {
+		unsubscribe = onAuthStateChanged(auth, (user) => {
+			set(user);
+		});
 
-    return () => unsubscribe()
-  })
+		return () => unsubscribe();
+	});
 
-  return {
-    subscribe,
-  }
+	return {
+		subscribe
+	};
 }
 
-export const sdk = writable<{ auth: Auth; firestore: Firestore }>()
+export const sdk = writable<{ auth: Auth; firestore: Firestore }>();

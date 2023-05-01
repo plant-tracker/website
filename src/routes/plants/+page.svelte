@@ -2,8 +2,7 @@
 	import { AppBar, Avatar } from '@skeletonlabs/skeleton';
 	import { AddBoxLine, PlantLine } from 'svelte-remixicon';
 
-	import { auth, firestore } from '$lib/firebase/init';
-	import { collectionStore, userStore } from '$lib/firebase';
+	import { collectionStore, userStore, auth, firestore } from '$lib/firebase';
 
 	const user = userStore(auth);
 	const userPlants = collectionStore(firestore, `users/${$user?.uid}/plants`);

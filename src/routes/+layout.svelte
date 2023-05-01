@@ -16,8 +16,7 @@
 	import Icon from '$lib/components/AppRailIcon.svelte';
 	import logo from '$lib/assets/icons/logo.png';
 	import logo_smile from '$lib/assets/vectors/logo_smile.svg';
-	import { userStore } from '$lib/firebase';
-	import { auth } from '$lib/firebase/init';
+	import { userStore, auth } from '$lib/firebase';
 	import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 	import { storeCurrentUrl } from '$lib/stores/stores';
 	import { page } from '$app/stores';
