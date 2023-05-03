@@ -44,54 +44,54 @@
 		<span>Short description</span>
 		<input class="input" type="text" placeholder="Water the soil, prune the branches, etc." />
 	</label>
-	<label class="label">
-		<span>Frequency</span>
-		<div class="space-y-2">
-			<label class="flex items-center space-x-2">
-				<input
-					class="radio"
-					type="radio"
-					checked
-					name="radio-direct"
-					value="everyday"
-					bind:group={selectedFrequencyType}
-				/>
-				<p>Everyday</p>
-			</label>
-			<label class="flex items-center space-x-2">
-				<input
-					class="radio"
-					type="radio"
-					name="radio-direct"
-					value="custom"
-					bind:group={selectedFrequencyType}
-				/>
-				<p>Once every custom amount of days</p>
-			</label>
-			{#if selectedFrequencyType === 'custom'}
-				<label class="flex items-center gap-3">
-					<input class="input" type="number" placeholder="3" />
-					<p>days</p>
+	<div class="flex flex-wrap gap-3">
+		<label class="label flex-1">
+			<span>Frequency</span>
+			<div class="space-y-2">
+				<label class="flex items-center space-x-2">
+					<input
+						class="radio"
+						type="radio"
+						checked
+						name="radio-direct"
+						value="everyday"
+						bind:group={selectedFrequencyType}
+					/>
+					<p>Everyday</p>
 				</label>
-			{/if}
-		</div>
-	</label>
-	<!-- time -->
-	<label class="label">
-		<span>Time</span>
-		<div class="flex items-center gap-3">
-			<input class="input" type="time" />
-		</div>
-
-		<div class="flex gap-3 flex-wrap pt-4">
-			<button type="button" class="btn variant-filled flex-1">
-				<span><Save2Line class="h-6 w-6" /></span>
-				<span>Save task</span>
-			</button>
-			<button type="button" class="btn variant-filled flex-1" on:click={cancelEvent}>
-				<span><ForbidLine class="h-6 w-6" /></span>
-				<span>Cancel</span>
-			</button>
-		</div>
-	</label>
+				<label class="flex items-center space-x-2">
+					<input
+						class="radio"
+						type="radio"
+						name="radio-direct"
+						value="custom"
+						bind:group={selectedFrequencyType}
+					/>
+					<p>Custom interval</p>
+				</label>
+				{#if selectedFrequencyType === 'custom'}
+					<label class="flex items-center gap-3">
+						<input class="input" type="number" placeholder="3" />
+						<p>days</p>
+					</label>
+				{/if}
+			</div>
+		</label>
+		<label class="label flex-1">
+			<span>Time</span>
+			<div class="flex items-center gap-3">
+				<input class="input" type="time" />
+			</div>
+		</label>
+	</div>
+	<div class="flex gap-3 flex-wrap pt-4">
+		<button type="button" class="btn variant-filled flex-1">
+			<span><Save2Line class="h-6 w-6" /></span>
+			<span>Save task</span>
+		</button>
+		<button type="button" class="btn variant-filled flex-1" on:click={cancelEvent}>
+			<span><ForbidLine class="h-6 w-6" /></span>
+			<span>Cancel</span>
+		</button>
+	</div>
 </div>
