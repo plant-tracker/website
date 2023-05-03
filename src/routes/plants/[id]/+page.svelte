@@ -35,10 +35,10 @@
 				<div class="flex flex-col gap-2">
 					<h4>Actions</h4>
 					<div class="flex flex-wrap gap-3">
-						<button type="button" class="btn variant-filled flex-1">
+						<a href="{id}/edit" class="btn variant-filled flex-1">
 							<span><Edit2Line class="h-6 w-6" /></span>
 							<span>Edit plant</span>
-						</button>
+						</a>
 						<button type="button" class="btn variant-filled flex-1">
 							<span><DeleteBinLine class="h-6 w-6" /></span>
 							<span>Delete plant</span>

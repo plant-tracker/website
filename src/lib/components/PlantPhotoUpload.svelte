@@ -3,6 +3,7 @@
 	import { ImageAddLine } from 'svelte-remixicon';
 
 	export let plantPhoto: File;
+	export let loadedPhoto: string;
 
 	function onChangeHandler(e: Event): void {
 		const target = e.target as HTMLInputElement;
@@ -19,15 +20,17 @@
 	on:change={onChangeHandler}
 	bind:plantPhoto
 >
-	<div slot="lead" class="flex justify-center {plantPhoto ? 'hidden' : 'flex'}">
+	<div slot="lead" class="flex justify-center {plantPhoto || loadedPhoto ? 'hidden' : 'flex'}">
 		<ImageAddLine class="h-12 w-12" />
 	</div>
 	<svelte:fragment slot="message">
 		{#if plantPhoto}
 			<img src={URL.createObjectURL(plantPhoto)} alt="Your plant" />
+		{:else if loadedPhoto}
+			<img src={loadedPhoto} alt="Your plant" />
 		{:else}
 			Upload plant photo
 		{/if}
 	</svelte:fragment>
-	<span class={plantPhoto ? 'hidden' : 'block'} slot="meta">PNG, JPG, GIF</span>
+	<span class={plantPhoto || loadedPhoto ? 'hidden' : 'block'} slot="meta">PNG, JPG, GIF</span>
 </FileDropzone>

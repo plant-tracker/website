@@ -9,7 +9,7 @@
 <RadioGroup>
 	{#each options as option}
 		<div class="flex-1">
-			<RadioItem bind:group={select} {name} value={option}>{option}</RadioItem>
+			<RadioItem bind:group={select} {name} value={option.toLowerCase()}>{option}</RadioItem>
 		</div>
 	{/each}
 </RadioGroup>
