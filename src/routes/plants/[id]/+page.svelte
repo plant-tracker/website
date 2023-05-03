@@ -22,7 +22,9 @@
 		<div class="flex flex-col gap-3 flex-1">
 			<h3>General</h3>
 			{#if $plant}
-				<PlantCard {id} plant={$plant} />
+				<div>
+					<PlantCard {id} plant={$plant} />
+				</div>
 				<span> Creation date: {$plant.created.toDate().toDateString()}</span>
 				<div class="flex flex-col gap-2">
 					<h4>Preferences</h4>
