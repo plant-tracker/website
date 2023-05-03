@@ -17,12 +17,12 @@
 	<h3>Editing {$plant?.name ?? ''}</h3>
 </AppBar>
 
-{#if $plant}
-	<div class="container mx-auto max-w-screen-xl p-4 md:p-10">
+<div class="container mx-auto max-w-screen-xl p-4 md:p-10">
+	{#if $plant}
 		<PlantForm plant={$plant} />
-	</div>
-{:else if $plant === undefined}
-	<p>Loading...</p>
-{:else}
-	<p>Plant not found</p>
-{/if}
+	{:else if $plant === undefined}
+		<p>Loading...</p>
+	{:else}
+		<p>Plant not found</p>
+	{/if}
+</div>
