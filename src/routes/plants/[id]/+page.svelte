@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import PlantCard from '$lib/components/PlantCard.svelte';
 	import PlantPreferencesCard from '$lib/components/PlantPreferencesCard.svelte';
+	import TaskForm from '$lib/components/TaskForm.svelte';
 	import { auth, docStore, firestore, userStore } from '$lib/firebase';
 	import type { Plant } from '$lib/types';
 	import { AppBar } from '@skeletonlabs/skeleton';
@@ -52,6 +53,7 @@
 				<span><MenuAddLine class="h-6 w-6" /></span>
 				<span>Add task</span>
 			</button>
+			<TaskForm />
 		</div>
 	</div>
 </div>
