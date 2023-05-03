@@ -14,10 +14,10 @@
 	<h3>Your plants</h3>
 	<h6>{$userPlants.length}/50</h6>
 	<svelte:fragment slot="trail">
-		<button type="button" class="btn btn-md variant-filled">
+		<a href="/plants/add" class="btn btn-md variant-filled">
 			<span><AddBoxLine class="h-6 w-6" /></span>
 			<span class="hidden sm:flex">Add plant</span>
-		</button>
+		</a>
 	</svelte:fragment>
 </AppBar>
 <div class="container mx-auto max-w-screen-lg p-4 md:p-10">

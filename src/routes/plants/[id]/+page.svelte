@@ -4,13 +4,18 @@
 	import PlantPreferencesCard from '$lib/components/PlantPreferencesCard.svelte';
 	import { auth, docStore, firestore, userStore } from '$lib/firebase';
 	import type { Plant } from '$lib/types';
-	import { MenuAddLine, DeleteBinLine, Edit2Line } from 'svelte-remixicon';
+	import { AppBar } from '@skeletonlabs/skeleton';
+	import { MenuAddLine, DeleteBinLine, Edit2Line, PlantLine } from 'svelte-remixicon';
 
 	const id = $page.params.id;
 	const user = userStore(auth);
 	const plant = docStore<Plant>(firestore, `users/${$user?.uid}/plants/${id}`);
 </script>
 
+<AppBar class="sticky top-0">
+	<svelte:fragment slot="lead"><PlantLine class="h-8 w-8 md:h-12 md:w-12" /></svelte:fragment>
+	<h3>Plant information</h3>
+</AppBar>
 <div class="container mx-auto max-w-screen-xl p-4 md:p-10">
 	<div class="flex flex-col sm:flex-row justify-center flex-wrap gap-10">
 		<div class="flex flex-col gap-3 flex-1">
