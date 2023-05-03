@@ -11,6 +11,8 @@
 	const id = $page.params.id;
 	const user = userStore(auth);
 	const plant = docStore<Plant>(firestore, `users/${$user?.uid}/plants/${id}`);
+
+	let taskForm: boolean = false;
 </script>
 
 <AppBar class="sticky top-0">
@@ -51,11 +53,14 @@
 		</div>
 		<div class="flex flex-col gap-3 flex-1">
 			<h3>Tasks</h3>
-			<button type="button" class="btn variant-filled">
-				<span><MenuAddLine class="h-6 w-6" /></span>
-				<span>Add task</span>
-			</button>
-			<TaskForm />
+			{#if taskForm}
+				<TaskForm on:cancelButtonclick={() => (taskForm = false)} />
+			{:else}
+				<button type="button" class="btn variant-filled" on:click={() => (taskForm = true)}>
+					<span><MenuAddLine class="h-6 w-6" /></span>
+					<span>Add task</span>
+				</button>
+			{/if}
 		</div>
 	</div>
 </div>

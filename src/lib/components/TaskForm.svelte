@@ -8,7 +8,13 @@
 		Save2Line,
 		ForbidLine
 	} from 'svelte-remixicon';
+	import { createEventDispatcher } from 'svelte';
 
+	const dispatch = createEventDispatcher();
+
+	function cancelEvent() {
+		dispatch('cancelButtonclick');
+	}
 	const taskTypes = [
 		{ value: 1, label: 'Watering', icon: DropLine },
 		{ value: 2, label: 'Fertilizing', icon: BardLine },
@@ -36,7 +42,7 @@
 
 	<label class="label">
 		<span>Short description</span>
-		<input class="input" type="text" placeholder="Water the soil" />
+		<input class="input" type="text" placeholder="Water the soil, prune the branches, etc." />
 	</label>
 	<label class="label">
 		<span>Frequency</span>
@@ -82,7 +88,7 @@
 				<span><Save2Line class="h-6 w-6" /></span>
 				<span>Save task</span>
 			</button>
-			<button type="button" class="btn variant-filled flex-1">
+			<button type="button" class="btn variant-filled flex-1" on:click={cancelEvent}>
 				<span><ForbidLine class="h-6 w-6" /></span>
 				<span>Cancel</span>
 			</button>
