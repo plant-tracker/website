@@ -17,7 +17,6 @@
 
 	export let plant: Plant;
 
-	const user = userStore(auth);
 	const plantTypes = [
 		{ value: 'cactus', label: '🌵 Cactus' },
 		{ value: 'succulent', label: '🌿 Succulent' },
@@ -27,9 +26,51 @@
 		{ value: 'bonsai', label: '🌳 Bonsai' }
 	];
 
+	const fieldLabels: Record<string, string> = {
+		name: 'Name',
+		type: 'Type',
+		species_name: 'Species Name',
+		location: 'Location',
+		temperature: 'Temperature',
+		humidity: 'Humidity',
+		light_levels: 'Light Levels'
+	};
+
+	const plantData: Plant = plant ?? {
+		name: '',
+		type: '',
+		species_name: '',
+		location: '',
+		temperature: '',
+		humidity: '',
+		light_levels: ''
+	};
+
 	let plantPhoto: File;
+	const user = userStore(auth);
+	let saving: boolean = false;
+
+	function validatePlantData(plantData: Plant): string[] {
+		const emptyFields: string[] = [];
+
+		for (const [key, value] of Object.entries(plantData)) {
+			if (!value) {
+				emptyFields.push(fieldLabels[key]);
+			}
+		}
+
+		return emptyFields;
+	}
 
 	async function savePlant() {
+		const emptyFields = validatePlantData(plantData);
+
+		if (emptyFields.length > 0) {
+			const message = `Please fill in the following fields: ${emptyFields.join(', ')}`;
+			toastStore.trigger({ message });
+			return;
+		}
+		saving = true;
 		try {
 			if (plant) {
 				await setDoc(doc(firestore, `users/${$user?.uid}/plants/`, plantData.id), plantData, {
@@ -47,18 +88,10 @@
 			}
 		} catch (error) {
 			toastStore.trigger({ message: 'Error saving plant', background: 'variant-filled-warning' });
+		} finally {
+			saving = false;
 		}
 	}
-
-	const plantData: Plant = plant ?? {
-		name: '',
-		type: '',
-		species_name: '',
-		temperature: '',
-		humidity: '',
-		light_levels: '',
-		location: ''
-	};
 </script>
 
 <div class="flex flex-row justify-center flex-wrap gap-10">
@@ -118,7 +151,12 @@
 		/>
 
 		<div class="flex gap-3 flex-wrap pt-4">
-			<button type="button" class="btn variant-filled flex-1" on:click={savePlant}>
+			<button
+				type="button"
+				class="btn variant-filled flex-1"
+				on:click={savePlant}
+				disabled={saving}
+			>
 				<span><Save2Line class="h-6 w-6" /></span>
 				<span>Save plant</span>
 			</button>

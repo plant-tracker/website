@@ -12,21 +12,3 @@ export interface Plant {
 	photo_url: string;
 	created: Timestamp;
 }
-
-enum Humidity {
-	"Low",
-	"Medium",
-	"High"
-}
-
-enum Temperature {
-	"Cold",
-	"Medium",
-	"Warm",
-}
-
-enum LightLevel {
-	"Low",
-	"Medium",
-	"High",
-}

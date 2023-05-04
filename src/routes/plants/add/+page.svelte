@@ -6,11 +6,6 @@
 	import { AppBar, FileDropzone } from '@skeletonlabs/skeleton';
 	import { AddBoxLine, Forbid2Line, ForbidLine, ImageAddLine, Save2Line } from 'svelte-remixicon';
 
-	let plantPhoto: File;
-	let temperature: string;
-	let humidity: string;
-	let light: string;
-
 	let plant: Plant;
 </script>
 
@@ -20,5 +15,5 @@
 </AppBar>
 
 <div class="container mx-auto max-w-screen-xl p-4 md:p-10">
-	<PlantForm plant={plant}/>
+	<PlantForm {plant} />
 </div>
