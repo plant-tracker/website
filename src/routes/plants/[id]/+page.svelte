@@ -33,7 +33,7 @@
 	}
 </script>
 
-<AppBar class="sticky top-0">
+<AppBar class="sticky top-0 z-30">
 	<svelte:fragment slot="lead"><PlantLine class="h-8 w-8 md:h-12 md:w-12" /></svelte:fragment>
 	<h3>Plant information</h3>
 </AppBar>

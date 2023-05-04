@@ -9,7 +9,7 @@
 	let plant: Plant;
 </script>
 
-<AppBar class="sticky top-0">
+<AppBar class="sticky top-0 z-30">
 	<svelte:fragment slot="lead"><AddBoxLine class="h-8 w-8 md:h-12 md:w-12" /></svelte:fragment>
 	<h3>Add plant</h3>
 </AppBar>
