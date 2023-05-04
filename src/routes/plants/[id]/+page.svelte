@@ -1,11 +1,13 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import PlantCard from '$lib/components/PlantCard.svelte';
 	import PlantPreferencesCard from '$lib/components/PlantPreferencesCard.svelte';
 	import TaskForm from '$lib/components/TaskForm.svelte';
 	import { auth, docStore, firestore, userStore } from '$lib/firebase';
 	import type { Plant } from '$lib/types';
-	import { AppBar } from '@skeletonlabs/skeleton';
+	import { AppBar, modalStore, toastStore } from '@skeletonlabs/skeleton';
+	import { deleteDoc, doc } from 'firebase/firestore';
 	import { MenuAddLine, DeleteBinLine, Edit2Line, PlantLine } from 'svelte-remixicon';
 
 	const id = $page.params.id;
@@ -13,6 +15,22 @@
 	const plant = docStore<Plant>(firestore, `users/${$user?.uid}/plants/${id}`);
 
 	let taskForm: boolean = false;
+
+	const deletePlant = () =>
+		modalStore.trigger({
+			type: 'confirm',
+			title: 'Please Confirm',
+			body: `Are you sure you want to delete ${$plant?.name}?`,
+			response: (r) => (r ? deletePlantDoc(id) : null)
+		});
+
+	async function deletePlantDoc(id: string) {
+		await deleteDoc(doc(firestore, `users/${$user?.uid}/plants/${id}`));
+		toastStore.trigger({
+			message: 'Plant deleted successfully'
+		});
+		goto('/plants');
+	}
 </script>
 
 <AppBar class="sticky top-0">
@@ -39,7 +57,7 @@
 							<span><Edit2Line class="h-6 w-6" /></span>
 							<span>Edit plant</span>
 						</a>
-						<button type="button" class="btn variant-filled flex-1">
+						<button type="button" class="btn variant-filled flex-1" on:click={deletePlant}>
 							<span><DeleteBinLine class="h-6 w-6" /></span>
 							<span>Delete plant</span>
 						</button>

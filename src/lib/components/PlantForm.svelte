@@ -13,6 +13,7 @@
 	} from 'firebase/firestore';
 	import { auth, docStore, firestore, userStore } from '$lib/firebase';
 	import { goto } from '$app/navigation';
+	import { toastStore } from '@skeletonlabs/skeleton';
 
 	export let plant: Plant;
 
@@ -29,18 +30,23 @@
 	let plantPhoto: File;
 
 	async function savePlant() {
-		if (plant) {
-			await setDoc(doc(firestore, `users/${$user?.uid}/plants/`, plantData.id), plantData, {
-				merge: true
-			});
-			console.log('Plant updated successfully!');
-		} else {
-			const newPlantRef = await addDoc(collection(firestore, `users/${$user?.uid}/plants`), {
-				...plantData,
-				created: Timestamp.now()
-			});
-			console.log('New plant created with ID: ', newPlantRef.id);
-			goto(`/plants/${newPlantRef.id}`);
+		try {
+			if (plant) {
+				await setDoc(doc(firestore, `users/${$user?.uid}/plants/`, plantData.id), plantData, {
+					merge: true
+				});
+				toastStore.trigger({ message: 'Plant updated successfully!' });
+				goto(`/plants/${plantData.id}`);
+			} else {
+				const newDocRef = await addDoc(collection(firestore, `users/${$user?.uid}/plants`), {
+					...plantData,
+					created: Timestamp.now()
+				});
+				toastStore.trigger({ message: 'Plant created successfully!' });
+				goto(`/plants/${newDocRef.id}`);
+			}
+		} catch (error) {
+			toastStore.trigger({ message: 'Error saving plant', background: 'variant-filled-warning' });
 		}
 	}
 

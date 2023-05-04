@@ -3,7 +3,14 @@
 	import '@skeletonlabs/skeleton/styles/all.css';
 	import '../app.postcss';
 
-	import { AppShell, AppRail, AppRailTile, LightSwitch } from '@skeletonlabs/skeleton';
+	import {
+		AppShell,
+		AppRail,
+		AppRailTile,
+		LightSwitch,
+		Toast,
+		Modal
+	} from '@skeletonlabs/skeleton';
 	import {
 		Home3Line,
 		PlantLine,
@@ -30,6 +37,8 @@
 	});
 </script>
 
+<Toast />
+<Modal />
 {#if $user}
 	<AppShell>
 		<svelte:fragment slot="sidebarLeft">
