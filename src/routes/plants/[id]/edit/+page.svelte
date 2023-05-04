@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import PlantCard from '$lib/components/PlantCard.svelte';
 	import PlantForm from '$lib/components/PlantForm.svelte';
 	import PlantPhotoUpload from '$lib/components/PlantPhotoUpload.svelte';
 	import { auth, docStore, firestore, userStore } from '$lib/firebase';
@@ -19,9 +20,9 @@
 
 <div class="container mx-auto max-w-screen-xl p-4 md:p-10">
 	{#if $plant}
-		<PlantForm plant={$plant} />
+		<PlantForm plant={{ ...$plant, id }} />
 	{:else if $plant === undefined}
-		<p>Loading...</p>
+		<p class="flex items-center justify-center">Loading...</p>
 	{:else}
 		<p>Plant not found</p>
 	{/if}

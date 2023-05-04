@@ -21,6 +21,7 @@
 	import { storeCurrentUrl } from '$lib/stores/stores';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
+	import PlantiLoading from '$lib/components/PlantiLoading.svelte';
 
 	const user = userStore(auth);
 
@@ -62,7 +63,7 @@
 {:else}
 	<div class="container h-full mx-auto flex flex-col gap-8 justify-center items-center">
 		{#if $user === undefined}
-			<img alt="Plant Tracker logo" src={logo} class=" h-32 w-32 md:h-48 md:w-48" />
+			<PlantiLoading />
 		{:else}
 			<div class="flex flex-row gap-4 items-center">
 				<img alt="Plant Tracker logo" src={logo} class="h-32 w-32 md:h-48 md:w-48" />

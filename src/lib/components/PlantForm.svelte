@@ -3,10 +3,20 @@
 	import PreferencesRadioGroup from '$lib/components/PreferencesRadioGroup.svelte';
 	import { ForbidLine, Save2Line } from 'svelte-remixicon';
 	import type { Plant } from '$lib/types';
-	import { Timestamp } from 'firebase/firestore';
+	import {
+		DocumentReference,
+		Timestamp,
+		addDoc,
+		collection,
+		doc,
+		setDoc
+	} from 'firebase/firestore';
+	import { auth, docStore, firestore, userStore } from '$lib/firebase';
+	import { goto } from '$app/navigation';
 
 	export let plant: Plant;
 
+	const user = userStore(auth);
 	const plantTypes = [
 		{ value: 'cactus', label: '🌵 Cactus' },
 		{ value: 'succulent', label: '🌿 Succulent' },
@@ -17,23 +27,37 @@
 	];
 
 	let plantPhoto: File;
-	const plantData: Plant = {
-		photo_url: plant?.photo_url ?? '',
-		temperature: plant?.temperature ?? '',
-		type: plant?.type ?? '',
-		humidity: plant?.humidity ?? '',
-		light_levels: plant?.light_levels ?? '',
-		name: plant?.name ?? '',
-		species_name: plant?.species_name ?? '',
-		location: plant?.location ?? '',
-		id: plant?.id ?? '',
-		created: plant?.created ?? Timestamp.now()
+
+	async function savePlant() {
+		if (plant) {
+			await setDoc(doc(firestore, `users/${$user?.uid}/plants/`, plantData.id), plantData, {
+				merge: true
+			});
+			console.log('Plant updated successfully!');
+		} else {
+			const newPlantRef = await addDoc(collection(firestore, `users/${$user?.uid}/plants`), {
+				...plantData,
+				created: Timestamp.now()
+			});
+			console.log('New plant created with ID: ', newPlantRef.id);
+			goto(`/plants/${newPlantRef.id}`);
+		}
+	}
+
+	const plantData: Plant = plant ?? {
+		name: '',
+		type: '',
+		species_name: '',
+		temperature: '',
+		humidity: '',
+		light_levels: '',
+		location: ''
 	};
 </script>
 
 <div class="flex flex-row justify-center flex-wrap gap-10">
 	<div class="flex flex-col gap-3 w-2/3 md:w-1/4">
-		<PlantPhotoUpload bind:plantPhoto loadedPhoto={plantData.photo_url} />
+		<PlantPhotoUpload bind:plantPhoto loadedPhoto={plantData?.photo_url} />
 	</div>
 	<div class="flex flex-col gap-3 w-full md:w-2/5">
 		<h3>General</h3>
@@ -88,7 +112,7 @@
 		/>
 
 		<div class="flex gap-3 flex-wrap pt-4">
-			<button type="button" class="btn variant-filled flex-1">
+			<button type="button" class="btn variant-filled flex-1" on:click={savePlant}>
 				<span><Save2Line class="h-6 w-6" /></span>
 				<span>Save plant</span>
 			</button>
