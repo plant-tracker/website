@@ -36,8 +36,6 @@
 		{ value: 'other', label: '🌼 Other' }
 	];
 
-	let plantPhoto: File;
-
 	function reset() {
 		plantFormData = plant ? { ...plant } : new PlantFields();
 	}
@@ -63,7 +61,7 @@
 
 <div class="flex flex-row justify-center flex-wrap gap-10">
 	<div class="flex flex-col gap-3 w-2/3 md:w-1/4">
-		<PlantPhotoUpload bind:plantPhoto loadedPhoto={plantFormData?.photo_url} />
+		<PlantPhotoUpload loadedPhoto={plantFormData.photo_url} />
 	</div>
 	<div class="flex flex-col gap-3 w-full md:w-2/5">
 		<h3>General</h3>

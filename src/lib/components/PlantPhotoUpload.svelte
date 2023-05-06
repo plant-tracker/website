@@ -10,11 +10,11 @@
 		uploadBytes,
 		uploadBytesResumable
 	} from 'firebase/storage';
-	import { ImageAddLine } from 'svelte-remixicon';
+	import { ContractUpDownLine, ImageAddLine } from 'svelte-remixicon';
 
-	export let plantPhoto: File;
 	export let loadedPhoto: string;
-	let progress = 0;
+	let progress: number = 0;
+	let plantPhoto: File;
 	const user = userStore(auth);
 
 	async function onChangeHandler(e: Event): Promise<void> {
@@ -22,7 +22,6 @@
 
 		if (target.files) {
 			plantPhoto = target.files[0];
-
 			try {
 				const storageRef = ref(storage, `users/${$user?.uid}/${plantPhoto.name}`);
 				const uploadTask = uploadBytesResumable(storageRef, plantPhoto);
@@ -32,12 +31,13 @@
 					(snapshot) => {
 						progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 					},
-					(error) => {
+					(error: StorageError) => {
 						showToast("Couldn't upload the photo", 'error');
 					},
 					async () => {
 						const fileURL = await getDownloadURL(storageRef);
 						loadedPhoto = fileURL;
+						progress = 0;
 						showToast('Photo uploaded', 'success');
 					}
 				);
@@ -56,11 +56,11 @@
 	on:change={onChangeHandler}
 	bind:plantPhoto
 >
-	<div slot="lead" class="flex justify-center {plantPhoto || loadedPhoto ? 'hidden' : 'flex'}">
+	<div slot="lead" class="flex justify-center {loadedPhoto || progress !== 0 ? 'hidden' : 'flex'}">
 		<ImageAddLine class="h-12 w-12" />
 	</div>
 	<svelte:fragment slot="message">
-		{#if progress > 0 && progress < 100}
+		{#if progress > 0 && progress <= 100}
 			<div class="relative">
 				<img
 					class="w-full h-full object-cover filter blur-md"
@@ -77,5 +77,5 @@
 			Upload plant photo
 		{/if}
 	</svelte:fragment>
-	<span class={plantPhoto || loadedPhoto ? 'hidden' : 'block'} slot="meta">PNG, JPG, GIF</span>
+	<span class={loadedPhoto || progress !== 0 ? 'hidden' : 'block'} slot="meta">PNG, JPG, GIF</span>
 </FileDropzone>
