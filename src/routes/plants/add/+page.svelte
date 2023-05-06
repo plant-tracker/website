@@ -1,7 +1,7 @@
 <script lang="ts">
 	import PlantForm from '$lib/components/PlantForm.svelte';
-	import { AppBar, FileDropzone } from '@skeletonlabs/skeleton';
-	import { AddBoxLine, Forbid2Line, ForbidLine, ImageAddLine, Save2Line } from 'svelte-remixicon';
+	import { AppBar } from '@skeletonlabs/skeleton';
+	import { AddBoxLine } from 'svelte-remixicon';
 </script>
 
 <AppBar class="sticky top-0 z-30">
@@ -10,5 +10,5 @@
 </AppBar>
 
 <div class="container mx-auto max-w-screen-xl p-4 md:p-10">
-	<PlantForm/>
+	<PlantForm />
 </div>

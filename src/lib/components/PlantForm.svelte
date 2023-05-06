@@ -2,16 +2,6 @@
 	import PlantPhotoUpload from '$lib/components/PlantPhotoUpload.svelte';
 	import { ForbidLine, Save2Line } from 'svelte-remixicon';
 	import type { Plant } from '$lib/types';
-	import {
-		DocumentReference,
-		Timestamp,
-		addDoc,
-		collection,
-		doc,
-		setDoc
-	} from 'firebase/firestore';
-	import { auth, docStore, firestore, userStore } from '$lib/firebase';
-	import { goto } from '$app/navigation';
 	import { toastStore } from '@skeletonlabs/skeleton';
 	import TextInputField from './form/fields/TextInput.svelte';
 	import type { Validator } from '$lib/components/form/validators/validator';
