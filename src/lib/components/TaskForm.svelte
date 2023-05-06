@@ -45,6 +45,8 @@
 	};
 
 	let taskFormData = new TaskFields();
+	let customInterval: boolean = false;
+	$: console.log(taskFormData);
 </script>
 
 <div class="flex flex-col gap-3">
@@ -71,8 +73,8 @@
 						type="radio"
 						name="radio-direct"
 						checked
-						value={1}
-						bind:group={taskFormData.interval}
+						value={false}
+						bind:group={customInterval}
 					/>
 					<p>Everyday</p>
 				</label>
@@ -81,14 +83,12 @@
 						class="radio"
 						type="radio"
 						name="radio-direct"
-						checked={taskFormData.interval !== 1}
-						on:change={() => {
-							taskFormData.interval = 3;
-						}}
+						bind:group={customInterval}
+						value={true}
 					/>
 					<p>Custom interval</p>
 				</label>
-				{#if taskFormData.interval !== 1}
+				{#if customInterval}
 					<div class="flex flex-row gap-3 items-center">
 						<NumberInput
 							label=""

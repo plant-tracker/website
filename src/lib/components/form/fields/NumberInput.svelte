@@ -14,7 +14,7 @@
 	function validate() {
 		try {
 			validators.forEach((validator) => {
-				validator.validate(value.toString());
+				validator.validate(value?.toString());
 			});
 			errorMessage = '';
 		} catch (error: any) {
