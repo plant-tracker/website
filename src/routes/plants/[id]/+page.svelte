@@ -3,6 +3,7 @@
 	import { page } from '$app/stores';
 	import PlantCard from '$lib/components/PlantCard.svelte';
 	import PlantPreferencesCard from '$lib/components/PlantPreferencesCard.svelte';
+	import TaskCard from '$lib/components/TaskCard.svelte';
 	import TaskForm from '$lib/components/TaskForm.svelte';
 	import { auth, docStore, firestore, userStore } from '$lib/firebase';
 	import type { Plant } from '$lib/types';
@@ -79,6 +80,7 @@
 					<span>Add task</span>
 				</button>
 			{/if}
+			<TaskCard />
 		</div>
 	</div>
 </div>

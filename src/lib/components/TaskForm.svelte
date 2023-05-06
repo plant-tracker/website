@@ -9,6 +9,13 @@
 		ForbidLine
 	} from 'svelte-remixicon';
 	import { createEventDispatcher } from 'svelte';
+	import TimeInput from './form/fields/TimeInput.svelte';
+	import TextInput from './form/fields/TextInput.svelte';
+	import type { Validator } from './form/validators/validator';
+	import { RequiredValidator } from './form/validators/required';
+	import Dropdown from './form/fields/Dropdown.svelte';
+	import NumberInput from './form/fields/NumberInput.svelte';
+	import { TaskIntervalValidator } from './form/validators/taskInterval';
 
 	const dispatch = createEventDispatcher();
 
@@ -16,34 +23,44 @@
 		dispatch('cancelButtonclick');
 	}
 	const taskTypes = [
-		{ value: 1, label: 'Watering', icon: DropLine },
-		{ value: 2, label: 'Fertilizing', icon: BardLine },
-		{ value: 3, label: 'Pruning', icon: ScissorsLine },
-		{ value: 4, label: 'Repotting', icon: PlantLine },
-		{ value: 5, label: 'Cleaning', icon: BubbleChartLine }
+		{ value: 'watering', label: 'Watering', icon: DropLine },
+		{ value: 'fertilizing', label: 'Fertilizing', icon: BardLine },
+		{ value: 'pruning', label: 'Pruning', icon: ScissorsLine },
+		{ value: 'repotting', label: 'Repotting', icon: PlantLine },
+		{ value: 'cleaning', label: 'Cleaning', icon: BubbleChartLine }
 	];
 
-	let selectedTaskType: number;
-	let selectedFrequencyType: string;
+	class TaskFields {
+		type: string = 'watering';
+		description: string = '';
+		interval: number = 1;
+		time: string = '';
+	}
+
+	let fieldValidators: { [key: string]: Validator[] } = {
+		type: [new RequiredValidator()],
+		description: [new RequiredValidator()],
+		interval: [new TaskIntervalValidator()],
+		time: [new RequiredValidator()]
+	};
+
+	let taskFormData = new TaskFields();
 </script>
 
 <div class="flex flex-col gap-3">
-	<label class="label">
-		<span>Type</span>
-		<div class="flex items-center gap-3">
-			<svelte:component this={taskTypes[selectedTaskType - 1]?.icon} class="h-6 w-6" />
-			<select class="select" bind:value={selectedTaskType}>
-				{#each taskTypes as taskType}
-					<option value={taskType.value}>{taskType.label}</option>
-				{/each}
-			</select>
-		</div>
-	</label>
+	<Dropdown
+		label="Type"
+		icon={taskTypes[taskTypes.findIndex((taskType) => taskType.value === taskFormData.type)].icon}
+		options={taskTypes}
+		bind:select={taskFormData.type}
+	/>
+	<TextInput
+		label="Short description"
+		placeholder="Water the soil, prune the branches, etc."
+		bind:value={taskFormData.description}
+		validators={fieldValidators.description}
+	/>
 
-	<label class="label">
-		<span>Short description</span>
-		<input class="input" type="text" placeholder="Water the soil, prune the branches, etc." />
-	</label>
 	<div class="flex flex-wrap gap-3">
 		<label class="label flex-1">
 			<span>Frequency</span>
@@ -52,10 +69,10 @@
 					<input
 						class="radio"
 						type="radio"
-						checked
 						name="radio-direct"
-						value="everyday"
-						bind:group={selectedFrequencyType}
+						checked
+						value={1}
+						bind:group={taskFormData.interval}
 					/>
 					<p>Everyday</p>
 				</label>
@@ -64,25 +81,34 @@
 						class="radio"
 						type="radio"
 						name="radio-direct"
-						value="custom"
-						bind:group={selectedFrequencyType}
+						checked={taskFormData.interval !== 1}
+						on:change={() => {
+							taskFormData.interval = 3;
+						}}
 					/>
 					<p>Custom interval</p>
 				</label>
-				{#if selectedFrequencyType === 'custom'}
-					<label class="flex items-center gap-3">
-						<input class="input" type="number" placeholder="3" />
-						<p>days</p>
-					</label>
+				{#if taskFormData.interval !== 1}
+					<div class="flex flex-row gap-3 items-center">
+						<NumberInput
+							label=""
+							placeholder="3"
+							bind:value={taskFormData.interval}
+							validators={fieldValidators.interval}
+						/>
+						<span>days</span>
+					</div>
 				{/if}
 			</div>
 		</label>
-		<label class="label flex-1">
-			<span>Time</span>
-			<div class="flex items-center gap-3">
-				<input class="input" type="time" />
-			</div>
-		</label>
+		<div class="label flex-1">
+			<TimeInput
+				label="Time"
+				placeholder="00:00"
+				bind:value={taskFormData.time}
+				validators={fieldValidators.time}
+			/>
+		</div>
 	</div>
 	<div class="flex gap-3 flex-wrap pt-4">
 		<button type="button" class="btn variant-filled flex-1">

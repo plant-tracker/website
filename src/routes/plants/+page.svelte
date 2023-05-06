@@ -11,8 +11,8 @@
 
 <AppBar class="sticky top-0 z-30">
 	<svelte:fragment slot="lead"><PlantLine class="h-8 w-8 md:h-12 md:w-12" /></svelte:fragment>
-	<h3>Your plants</h3>
 	<h6>{$userPlants.length}/50</h6>
+	<h3>Your plants</h3>
 	<svelte:fragment slot="trail">
 		<a href="/plants/add" class="btn btn-md variant-filled">
 			<span><AddBoxLine class="h-6 w-6" /></span>
