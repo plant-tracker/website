@@ -4,13 +4,22 @@
 	import PlantForm from '$lib/components/PlantForm.svelte';
 	import PlantPhotoUpload from '$lib/components/PlantPhotoUpload.svelte';
 	import { auth, docStore, firestore, userStore } from '$lib/firebase';
+	import { showToast } from '$lib/toastWrapper';
 	import type { Plant } from '$lib/types';
-	import { AppBar } from '@skeletonlabs/skeleton';
+	import { AppBar, toastStore } from '@skeletonlabs/skeleton';
 	import { AddBoxLine, PlantLine } from 'svelte-remixicon';
 
 	const id = $page.params.id;
 	const user = userStore(auth);
 	const plant = docStore<Plant>(firestore, `users/${$user?.uid}/plants/${id}`);
+	let initialLoad = true;
+
+	$: if ($plant !== null && $plant !== undefined) {
+		if (!initialLoad) {
+			showToast('The plant data has been recently edited in another app.', 'warning');
+		}
+		initialLoad = false;
+	}
 </script>
 
 <AppBar class="sticky top-0 z-30">
