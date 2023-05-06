@@ -6,6 +6,7 @@
 	import TaskCard from '$lib/components/TaskCard.svelte';
 	import TaskForm from '$lib/components/TaskForm.svelte';
 	import { auth, docStore, firestore, userStore } from '$lib/firebase';
+	import { showToast } from '$lib/toastWrapper';
 	import type { Plant } from '$lib/types';
 	import { AppBar, modalStore, toastStore } from '@skeletonlabs/skeleton';
 	import { deleteDoc, doc } from 'firebase/firestore';
@@ -27,9 +28,8 @@
 
 	async function deletePlantDoc(id: string) {
 		await deleteDoc(doc(firestore, `users/${$user?.uid}/plants/${id}`));
-		toastStore.trigger({
-			message: 'Plant deleted successfully'
-		});
+		showToast('Plant deleted successfully.', 'success');
+
 		goto('/plants');
 	}
 </script>

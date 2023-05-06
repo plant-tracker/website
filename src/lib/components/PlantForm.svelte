@@ -8,6 +8,7 @@
 	import { RequiredValidator } from '$lib/components/form/validators/required';
 	import RadioInput from './form/fields/RadioInput.svelte';
 	import Dropdown from './form/fields/Dropdown.svelte';
+	import { showToast } from '$lib/toastWrapper';
 
 	export let plant: Plant | undefined = undefined;
 
@@ -55,7 +56,7 @@
 				});
 			});
 		} catch (error: any) {
-			toastStore.trigger({ message: 'Please, fill in all fields.' });
+			showToast('Please, fill in all fields.', 'error');
 		}
 	}
 </script>
