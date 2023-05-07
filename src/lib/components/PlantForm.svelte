@@ -74,7 +74,7 @@
 			} else {
 				const newPlantDocRef = doc(collection(firestore, `users/${$user?.uid}/plants`));
 				batch.set(newPlantDocRef, { ...plantFormData, created: Timestamp.now() });
-				batch.update(userDocRef, { total_plants: increment(1) });
+				batch.set(userDocRef, { total_plants: increment(1) }, { merge: true });
 
 				await batch.commit();
 				goto(`/plants`);

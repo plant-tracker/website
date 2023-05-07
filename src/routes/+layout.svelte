@@ -57,7 +57,7 @@
 					<div class="flex justify-center items-center w-full aspect-square space-y-1.5">
 						<LightSwitch />
 					</div>
-					<AppRailTile label="Settings" value={'/settings'}
+					<AppRailTile tag="a" href="/settings" label="Settings" value={'/settings'}
 						><Icon src={Settings2Line} /></AppRailTile
 					>
 					<AppRailTile label="Logout" on:click={() => signOut(auth)}

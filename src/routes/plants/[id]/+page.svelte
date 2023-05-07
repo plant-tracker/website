@@ -5,18 +5,21 @@
 	import PlantPreferencesCard from '$lib/components/PlantPreferencesCard.svelte';
 	import TaskCard from '$lib/components/TaskCard.svelte';
 	import TaskForm from '$lib/components/TaskForm.svelte';
+	import Tip from '$lib/components/Tip.svelte';
 	import { auth, docStore, firestore, userStore } from '$lib/firebase';
 	import { showToast } from '$lib/toastWrapper';
 	import type { Plant } from '$lib/types';
-	import { AppBar, modalStore } from '@skeletonlabs/skeleton';
+	import { AppBar, localStorageStore, modalStore } from '@skeletonlabs/skeleton';
 	import { deleteDoc, doc, increment, writeBatch } from 'firebase/firestore';
 	import { MenuAddLine, DeleteBinLine, Edit2Line, PlantLine } from 'svelte-remixicon';
+	import type { Writable } from 'svelte/store';
 
 	const id = $page.params.id;
 	const user = userStore(auth);
 	const plant = docStore<Plant>(firestore, `users/${$user?.uid}/plants/${id}`);
 
 	let taskForm = false;
+	const enableTipsStore: Writable<boolean> = localStorageStore('enableTips', true);
 
 	const deletePlant = () =>
 		modalStore.trigger({
@@ -55,6 +58,9 @@
 					<PlantCard {id} plant={$plant} />
 				</div>
 				<span> Creation date: {$plant.created.toDate().toDateString()}</span>
+				{#if $enableTipsStore}
+					<Tip />
+				{/if}
 				<div class="flex flex-col gap-2">
 					<h4>Preferences</h4>
 					<PlantPreferencesCard plant={$plant} />
