@@ -5,7 +5,7 @@
 	import PlantPreferencesCard from '$lib/components/PlantPreferencesCard.svelte';
 	import TaskCard from '$lib/components/TaskCard.svelte';
 	import TaskForm from '$lib/components/TaskForm.svelte';
-	import Tip from '$lib/components/Tip.svelte';
+	import TipCard from '$lib/components/TipCard.svelte';
 	import { auth, docStore, firestore, userStore } from '$lib/firebase';
 	import { showToast } from '$lib/toastWrapper';
 	import type { Plant } from '$lib/types';
@@ -59,7 +59,7 @@
 				</div>
 				<span> Creation date: {$plant.created.toDate().toDateString()}</span>
 				{#if $enableTipsStore}
-					<Tip />
+					<TipCard tipType={$plant.type} />
 				{/if}
 				<div class="flex flex-col gap-2">
 					<h4>Preferences</h4>

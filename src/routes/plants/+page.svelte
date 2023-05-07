@@ -7,6 +7,15 @@
 
 	const user = userStore(auth);
 	const userPlants = collectionStore<Plant>(firestore, `users/${$user?.uid}/plants`);
+
+	let filteredPlants: Plant[] = [];
+
+	$: filteredPlants = $userPlants;
+	$: uniquePlantTypes = Array.from(new Set($userPlants.map((plant) => plant.type)));
+
+	function filterPlants(plantType: string) {
+		filteredPlants = $userPlants.filter((plant) => plant.type === plantType);
+	}
 </script>
 
 <AppBar class="sticky top-0 z-30">
@@ -20,9 +29,18 @@
 		</a>
 	</svelte:fragment>
 </AppBar>
+
 <div class="container mx-auto max-w-screen-lg p-4 md:p-10">
+	<button on:click={() => (filteredPlants = $userPlants)} class="btn btn-md variant-filled">
+		All
+	</button>
+	{#each uniquePlantTypes as plantType}
+		<button on:click={() => filterPlants(plantType)} class="btn btn-md mr-2 mb-2">
+			{plantType}
+		</button>
+	{/each}
 	<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-center items-center">
-		{#each $userPlants as plant (plant.id)}
+		{#each filteredPlants as plant (plant.id)}
 			<PlantCard id={plant.id} {plant} />
 		{/each}
 	</div>

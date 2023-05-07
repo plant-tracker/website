@@ -1,16 +1,10 @@
 <script>
-	import { FirebaseApp, User, firestore, auth } from '$lib/firebase';
-	import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+	import { auth, docStore, firestore, userStore } from '$lib/firebase';
 
-	const provider = new GoogleAuthProvider();
+	const user = userStore(auth);
+	const stats = docStore(firestore, `users/${$user?.uid}`);
 </script>
 
-<FirebaseApp {auth} {firestore}>
-	<User let:user>
-		Hello {user.displayName}
-
-		<div slot="signedOut">
-			<button on:click={() => signInWithPopup(auth, provider)}>Sign in</button>
-		</div>
-	</User>
-</FirebaseApp>
+Hello {$user?.displayName}
+{$stats?.total_plants ?? 0}
+{$stats?.total_tasks ?? 0}
