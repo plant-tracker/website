@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import NotificationCard from '$lib/components/NotificationCard.svelte';
 	import TipCard from '$lib/components/TipCard.svelte';
 	import { auth, collectionStore, docStore, firestore, userStore } from '$lib/firebase';
@@ -17,11 +17,14 @@
 		WindowsFill,
 		WindowsLine
 	} from 'svelte-remixicon';
-	import Notification from '$lib/components/Notification.svelte';
+	import type { Notification } from '$lib/types';
 
 	const user = userStore(auth);
 	const stats = docStore(firestore, `users/${$user?.uid}`);
-	const notifications = collectionStore(firestore, `users/${$user?.uid}/notifications`);
+	const notifications = collectionStore<Notification>(
+		firestore,
+		`users/${$user?.uid}/notifications`
+	);
 </script>
 
 <div class="container mx-auto max-w-screen-xl p-4 md:p-10">
@@ -92,7 +95,7 @@
 
 				{#if $notifications}
 					{#each $notifications as notification}
-						<NotificationCard {...notification} />
+						<NotificationCard {notification} />
 					{/each}
 				{:else}
 					<p>No new notifications</p>
