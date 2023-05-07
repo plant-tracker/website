@@ -31,10 +31,10 @@
 	];
 
 	class TaskFields {
-		type: string = 'watering';
-		description: string = '';
-		interval: number = 1;
-		time: string = '';
+		type = 'watering';
+		description = '';
+		interval = 1;
+		time = '';
 	}
 
 	let fieldValidators: { [key: string]: Validator[] } = {
@@ -45,8 +45,7 @@
 	};
 
 	let taskFormData = new TaskFields();
-	let customInterval: boolean = false;
-	$: console.log(taskFormData);
+	let customInterval = false;
 </script>
 
 <div class="flex flex-col gap-3">

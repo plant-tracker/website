@@ -10,14 +10,6 @@
 	const id = $page.params.id;
 	const user = userStore(auth);
 	const plant = docStore<Plant>(firestore, `users/${$user?.uid}/plants/${id}`);
-	let initialLoad = true;
-
-	$: if ($plant !== null && $plant !== undefined) {
-		if (!initialLoad) {
-			showToast('The plant data has been recently edited in another app.', 'warning');
-		}
-		initialLoad = false;
-	}
 </script>
 
 <AppBar class="sticky top-0 z-30">

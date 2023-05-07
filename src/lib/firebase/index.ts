@@ -9,7 +9,6 @@ import { getAuth } from 'firebase/auth';
 import { firebaseConfig } from './config';
 import { getStorage } from 'firebase/storage';
 
-
 export { Doc, User, Collection, FirebaseApp, docStore, collectionStore, userStore };
 const app = initializeApp(firebaseConfig);
 export const firestore = getFirestore(app);

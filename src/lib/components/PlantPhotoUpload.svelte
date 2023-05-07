@@ -1,19 +1,12 @@
 <script lang="ts">
-	import { auth, firestore, storage, userStore } from '$lib/firebase';
+	import { auth, storage, userStore } from '$lib/firebase';
 	import { showToast } from '$lib/toastWrapper';
 	import { FileDropzone, ProgressRadial } from '@skeletonlabs/skeleton';
-	import {
-		StorageError,
-		getDownloadURL,
-		getStorage,
-		ref,
-		uploadBytes,
-		uploadBytesResumable
-	} from 'firebase/storage';
-	import { ContractUpDownLine, ImageAddLine } from 'svelte-remixicon';
+	import { StorageError, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+	import { ImageAddLine } from 'svelte-remixicon';
 
 	export let loadedPhoto: string;
-	let progress: number = 0;
+	let progress = 0;
 	let plantPhoto: File;
 	const user = userStore(auth);
 

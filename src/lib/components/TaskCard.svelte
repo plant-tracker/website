@@ -1,9 +1,7 @@
 <script lang="ts">
 	import {
 		Calendar2Line,
-		DeleteBin2Line,
 		DeleteBinLine,
-		DropFill,
 		DropLine,
 		SkipRightLine,
 		TimeLine

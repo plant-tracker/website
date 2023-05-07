@@ -8,15 +8,15 @@
 	import { auth, docStore, firestore, userStore } from '$lib/firebase';
 	import { showToast } from '$lib/toastWrapper';
 	import type { Plant } from '$lib/types';
-	import { AppBar, modalStore, toastStore } from '@skeletonlabs/skeleton';
-	import { deleteDoc, doc } from 'firebase/firestore';
+	import { AppBar, modalStore } from '@skeletonlabs/skeleton';
+	import { deleteDoc, doc, increment, writeBatch } from 'firebase/firestore';
 	import { MenuAddLine, DeleteBinLine, Edit2Line, PlantLine } from 'svelte-remixicon';
 
 	const id = $page.params.id;
 	const user = userStore(auth);
 	const plant = docStore<Plant>(firestore, `users/${$user?.uid}/plants/${id}`);
 
-	let taskForm: boolean = false;
+	let taskForm = false;
 
 	const deletePlant = () =>
 		modalStore.trigger({
@@ -27,7 +27,15 @@
 		});
 
 	async function deletePlantDoc(id: string) {
-		await deleteDoc(doc(firestore, `users/${$user?.uid}/plants/${id}`));
+		const userRef = doc(firestore, `users/${$user?.uid}`);
+		const plantRef = doc(firestore, `users/${$user?.uid}/plants/${id}`);
+		const batch = writeBatch(firestore);
+
+		batch.delete(plantRef);
+		batch.update(userRef, { total_plants: increment(-1) });
+
+		await batch.commit();
+
 		showToast('Plant deleted successfully.', 'success');
 
 		goto('/plants');

@@ -9,7 +9,7 @@
 	$: {
 		value, (errorMessage = '');
 	}
-	let errorMessage: string = '';
+	let errorMessage = '';
 
 	function validate() {
 		try {

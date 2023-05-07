@@ -2,7 +2,6 @@
 	import PlantPhotoUpload from '$lib/components/PlantPhotoUpload.svelte';
 	import { ForbidLine, RefreshLine, Save2Line } from 'svelte-remixicon';
 	import type { Plant } from '$lib/types';
-	import { toastStore } from '@skeletonlabs/skeleton';
 	import TextInputField from './form/fields/TextInput.svelte';
 	import type { Validator } from '$lib/components/form/validators/validator';
 	import { RequiredValidator } from '$lib/components/form/validators/required';
@@ -15,16 +14,17 @@
 
 	export let plant: Plant | undefined = undefined;
 	const user = userStore(auth);
-	let saving: boolean = false;
+	let saving = false;
+
 	class PlantFields {
-		name: string = '';
-		species_name: string = '';
-		type: string = 'cactus';
-		location: string = '';
-		humidity: string = 'medium';
-		temperature: string = 'medium';
-		light_levels: string = 'medium';
-		photo_url: string = '';
+		name = '';
+		species_name = '';
+		type = 'cactus';
+		location = '';
+		humidity = 'medium';
+		temperature = 'medium';
+		light_levels = 'medium';
+		photo_url = '';
 	}
 
 	let plantFormData: PlantFields = plant ? { ...plant } : new PlantFields();
@@ -69,12 +69,11 @@
 		try {
 			if (plant) {
 				const plantDocRef = doc(firestore, `users/${$user?.uid}/plants`, plant.id);
-				await updateDoc(plantDocRef, { ...plantFormData });
+				await updateDoc(plantDocRef, (({ id, ...rest }) => ({ ...rest }))(plantFormData));
 				goto(`/plants/${plant.id}`);
 			} else {
 				const newPlantDocRef = doc(collection(firestore, `users/${$user?.uid}/plants`));
 				batch.set(newPlantDocRef, { ...plantFormData, created: Timestamp.now() });
-
 				batch.update(userDocRef, { total_plants: increment(1) });
 
 				await batch.commit();
