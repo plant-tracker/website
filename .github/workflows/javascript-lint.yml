@@ -1,4 +1,4 @@
-name: JavaScript Lint
+name: JavaScript Lint and Test
 
 on:
   pull_request:
@@ -44,3 +44,6 @@ jobs:
 
       - name: Run JS linter
         run: npm run lint
+
+      - name: Run Unit Tests
+        run: npm run test:unit

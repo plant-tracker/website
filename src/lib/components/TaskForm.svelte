@@ -16,19 +16,13 @@
 	import Dropdown from './form/fields/Dropdown.svelte';
 	import NumberInput from './form/fields/NumberInput.svelte';
 	import { TaskIntervalValidator } from './form/validators/taskInterval';
+	import { taskTypes } from '$lib/types/taskTypes';
 
 	const dispatch = createEventDispatcher();
 
 	function cancelEvent() {
 		dispatch('cancelButtonclick');
 	}
-	const taskTypes = [
-		{ value: 'watering', label: 'Watering', icon: DropLine },
-		{ value: 'fertilizing', label: 'Fertilizing', icon: BardLine },
-		{ value: 'pruning', label: 'Pruning', icon: ScissorsLine },
-		{ value: 'repotting', label: 'Repotting', icon: PlantLine },
-		{ value: 'cleaning', label: 'Cleaning', icon: BubbleChartLine }
-	];
 
 	class TaskFields {
 		type = 'watering';

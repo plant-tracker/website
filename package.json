@@ -40,6 +40,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"firebase": "^9.21.0"
+		"@testing-library/svelte": "^3.2.2",
+		"firebase": "^9.21.0",
+		"happy-dom": "^9.10.9"
 	}
 }
