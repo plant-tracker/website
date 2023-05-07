@@ -23,7 +23,7 @@
 		if (target.files) {
 			plantPhoto = target.files[0];
 			try {
-				const storageRef = ref(storage, `users/${$user?.uid}/${plantPhoto.name}`);
+				const storageRef = ref(storage, `users/${$user?.uid}/${Date.now()}-${plantPhoto.name}`);
 				const uploadTask = uploadBytesResumable(storageRef, plantPhoto);
 
 				uploadTask.on(

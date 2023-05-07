@@ -9,9 +9,13 @@
 	import RadioInput from './form/fields/RadioInput.svelte';
 	import Dropdown from './form/fields/Dropdown.svelte';
 	import { showToast } from '$lib/toastWrapper';
+	import { Timestamp, collection, doc, increment, updateDoc, writeBatch } from 'firebase/firestore';
+	import { auth, firestore, userStore } from '$lib/firebase';
+	import { goto } from '$app/navigation';
 
 	export let plant: Plant | undefined = undefined;
-
+	const user = userStore(auth);
+	let saving: boolean = false;
 	class PlantFields {
 		name: string = '';
 		species_name: string = '';
@@ -46,7 +50,7 @@
 		location: [new RequiredValidator()]
 	};
 
-	function save() {
+	async function savePlant() {
 		try {
 			Object.keys(fieldValidators).forEach((key) => {
 				fieldValidators[key].forEach((validator) => {
@@ -55,13 +59,33 @@
 			});
 		} catch (error: any) {
 			showToast('Please, fill in all fields.', 'error');
+			return;
 		}
+
+		let batch = writeBatch(firestore);
+		const userDocRef = doc(firestore, `users/${$user?.uid}`);
+		saving = true;
+		if (plant) {
+			const plantDocRef = doc(firestore, `users/${$user?.uid}/plants`, plant.id);
+			await updateDoc(plantDocRef, { ...plantFormData });
+			goto(`/plants/${plant.id}`);
+		} else {
+			const newPlantDocRef = doc(collection(firestore, `users/${$user?.uid}/plants`));
+			batch.set(newPlantDocRef, { ...plantFormData, created: Timestamp.now() });
+
+			batch.update(userDocRef, { total_plants: increment(1) });
+
+			await batch.commit();
+			goto(`/plants`);
+		}
+		saving = false;
+		showToast('Plant saved successfully.', 'success');
 	}
 </script>
 
 <div class="flex flex-row justify-center flex-wrap gap-10">
 	<div class="flex flex-col gap-3 w-2/3 md:w-1/4">
-		<PlantPhotoUpload loadedPhoto={plantFormData.photo_url} />
+		<PlantPhotoUpload bind:loadedPhoto={plantFormData.photo_url} />
 	</div>
 	<div class="flex flex-col gap-3 w-full md:w-2/5">
 		<h3>General</h3>
@@ -101,7 +125,12 @@
 			options={['Low', 'Medium', 'High']}
 		/>
 		<div class="flex gap-3 flex-wrap pt-4">
-			<button type="button" class="btn variant-filled flex-1" on:click={save}>
+			<button
+				type="button"
+				class="btn variant-filled flex-1"
+				on:click={savePlant}
+				disabled={saving}
+			>
 				<span><Save2Line class="h-6 w-6" /></span>
 				<span>Save</span>
 			</button>
