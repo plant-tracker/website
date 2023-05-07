@@ -8,6 +8,7 @@
 	import { localStorageStore } from '@skeletonlabs/skeleton';
 
 	const enableTipsStore: Writable<boolean> = localStorageStore('enableTips', true);
+	const enableNotifications: Writable<boolean> = localStorageStore('enableNotifications', true);
 
 	async function deleteAccount(): Promise<void> {
 		try {
@@ -39,6 +40,10 @@
 			<div class="flex gap-3 items-center">
 				<SlideToggle bind:checked={$enableTipsStore} name="slide" />
 				<span>Enable helpful tips</span>
+			</div>
+			<div class="flex gap-3 items-center">
+				<SlideToggle bind:checked={$enableNotifications} name="slide" />
+				<span>Enable notifications</span>
 			</div>
 		</div>
 		<div class="flex flex-col flex-1 gap-3">

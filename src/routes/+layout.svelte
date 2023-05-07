@@ -29,6 +29,7 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import PlantiLoading from '$lib/components/PlantiLoading.svelte';
+	import Notification from '$lib/components/Notification.svelte';
 
 	const user = userStore(auth);
 
@@ -66,7 +67,7 @@
 				</svelte:fragment>
 			</AppRail></svelte:fragment
 		>
-
+		<Notification />
 		<slot />
 	</AppShell>
 {:else}

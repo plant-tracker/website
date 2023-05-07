@@ -31,14 +31,16 @@
 </AppBar>
 
 <div class="container mx-auto max-w-screen-lg p-4 md:p-10">
-	<button on:click={() => (filteredPlants = $userPlants)} class="btn btn-md variant-filled">
-		All
-	</button>
-	{#each uniquePlantTypes as plantType}
-		<button on:click={() => filterPlants(plantType)} class="btn btn-md mr-2 mb-2">
-			{plantType}
+	<div class="pb-3">
+		<button on:click={() => (filteredPlants = $userPlants)} class="btn btn-md variant-filled">
+			All
 		</button>
-	{/each}
+		{#each uniquePlantTypes as plantType}
+			<button on:click={() => filterPlants(plantType)} class="btn btn-md mr-2 mb-2">
+				{plantType}
+			</button>
+		{/each}
+	</div>
 	<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-center items-center">
 		{#each filteredPlants as plant (plant.id)}
 			<PlantCard id={plant.id} {plant} />

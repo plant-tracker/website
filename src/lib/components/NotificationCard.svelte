@@ -7,7 +7,7 @@
 	import { DeleteBinLine } from 'svelte-remixicon';
 </script>
 
-<div class="card flex flex-row p-3 gap-3 items-center w-full max-w-xl">
+<div class="card flex flex-row p-3 gap-3 items-center w-full">
 	<svelte:component this={taskTypes.find((t) => t.value === type)?.icon} class="h-16 w-16" />
 	<div class="flex flex-col gap-2 w-full">
 		<h2>{body}</h2>
