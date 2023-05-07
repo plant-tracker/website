@@ -1,6 +1,6 @@
 <script lang="ts">
 	import PlantPhotoUpload from '$lib/components/PlantPhotoUpload.svelte';
-	import { ForbidLine, Save2Line } from 'svelte-remixicon';
+	import { ForbidLine, RefreshLine, Save2Line } from 'svelte-remixicon';
 	import type { Plant } from '$lib/types';
 	import { toastStore } from '@skeletonlabs/skeleton';
 	import TextInputField from './form/fields/TextInput.svelte';
@@ -65,21 +65,26 @@
 		let batch = writeBatch(firestore);
 		const userDocRef = doc(firestore, `users/${$user?.uid}`);
 		saving = true;
-		if (plant) {
-			const plantDocRef = doc(firestore, `users/${$user?.uid}/plants`, plant.id);
-			await updateDoc(plantDocRef, { ...plantFormData });
-			goto(`/plants/${plant.id}`);
-		} else {
-			const newPlantDocRef = doc(collection(firestore, `users/${$user?.uid}/plants`));
-			batch.set(newPlantDocRef, { ...plantFormData, created: Timestamp.now() });
 
-			batch.update(userDocRef, { total_plants: increment(1) });
+		try {
+			if (plant) {
+				const plantDocRef = doc(firestore, `users/${$user?.uid}/plants`, plant.id);
+				await updateDoc(plantDocRef, { ...plantFormData });
+				goto(`/plants/${plant.id}`);
+			} else {
+				const newPlantDocRef = doc(collection(firestore, `users/${$user?.uid}/plants`));
+				batch.set(newPlantDocRef, { ...plantFormData, created: Timestamp.now() });
 
-			await batch.commit();
-			goto(`/plants`);
+				batch.update(userDocRef, { total_plants: increment(1) });
+
+				await batch.commit();
+				goto(`/plants`);
+			}
+			showToast('Plant saved successfully.', 'success');
+		} catch (firebaseError: any) {
+			showToast(`Error saving plant: ${firebaseError.message}`, 'error');
 		}
 		saving = false;
-		showToast('Plant saved successfully.', 'success');
 	}
 </script>
 
@@ -135,7 +140,7 @@
 				<span>Save</span>
 			</button>
 			<button type="button" on:click={reset} class="btn variant-filled flex-1">
-				<span><Save2Line class="h-6 w-6" /></span>
+				<span><RefreshLine class="h-6 w-6" /></span>
 				<span>Reset</span>
 			</button>
 			<a href="./" class="btn variant-filled flex-1">
