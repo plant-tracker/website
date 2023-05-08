@@ -30,7 +30,7 @@
 								>Plant Tracker</span
 							>
 						</h1>
-						<span>Root for your plants and watch them grow!</span>
+						<span>Keep calm and plant on.</span>
 					</div>
 				</div>
 			</div>
