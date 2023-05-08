@@ -6,27 +6,9 @@ export interface Plant {
 	species_name: string;
 	type: string;
 	location: string;
-	humidity: Humidity;
-	temperature: Temperature;
-	light_levels: LightLevel;
+	humidity: string;
+	temperature: string;
+	light_levels: string;
 	photo_url: string;
 	created: Timestamp;
-}
-
-enum Humidity {
-	Low,
-	Medium,
-	High
-}
-
-enum Temperature {
-	Cold,
-	Moderate,
-	Warm
-}
-
-enum LightLevel {
-	Low,
-	Medium,
-	High
 }

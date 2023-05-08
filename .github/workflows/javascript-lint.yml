@@ -1,4 +1,4 @@
-name: JavaScript Lint
+name: JavaScript Lint and Test
 
 on:
   pull_request:
@@ -27,6 +27,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Sync Submodules
+        run: |
+          git submodule sync --recursive
+          git submodule update --init --recursive
+
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
@@ -44,3 +49,6 @@ jobs:
 
       - name: Run JS linter
         run: npm run lint
+
+      - name: Run Unit Tests
+        run: npm run test:unit

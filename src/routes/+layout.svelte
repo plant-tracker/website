@@ -3,7 +3,14 @@
 	import '@skeletonlabs/skeleton/styles/all.css';
 	import '../app.postcss';
 
-	import { AppShell, AppRail, AppRailTile, LightSwitch } from '@skeletonlabs/skeleton';
+	import {
+		AppShell,
+		AppRail,
+		AppRailTile,
+		LightSwitch,
+		Toast,
+		Modal
+	} from '@skeletonlabs/skeleton';
 	import {
 		Home3Line,
 		PlantLine,
@@ -21,6 +28,8 @@
 	import { storeCurrentUrl } from '$lib/stores/stores';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
+	import PlantiLoading from '$lib/components/PlantiLoading.svelte';
+	import Notification from '$lib/components/Notification.svelte';
 
 	const user = userStore(auth);
 
@@ -29,6 +38,8 @@
 	});
 </script>
 
+<Toast />
+<Modal />
 {#if $user}
 	<AppShell>
 		<svelte:fragment slot="sidebarLeft">
@@ -47,7 +58,7 @@
 					<div class="flex justify-center items-center w-full aspect-square space-y-1.5">
 						<LightSwitch />
 					</div>
-					<AppRailTile label="Settings" value={'/settings'}
+					<AppRailTile tag="a" href="/settings" label="Settings" value={'/settings'}
 						><Icon src={Settings2Line} /></AppRailTile
 					>
 					<AppRailTile label="Logout" on:click={() => signOut(auth)}
@@ -56,13 +67,13 @@
 				</svelte:fragment>
 			</AppRail></svelte:fragment
 		>
-
+		<Notification />
 		<slot />
 	</AppShell>
 {:else}
 	<div class="container h-full mx-auto flex flex-col gap-8 justify-center items-center">
 		{#if $user === undefined}
-			<img alt="Plant Tracker logo" src={logo} class=" h-32 w-32 md:h-48 md:w-48" />
+			<PlantiLoading />
 		{:else}
 			<div class="flex flex-row gap-4 items-center">
 				<img alt="Plant Tracker logo" src={logo} class="h-32 w-32 md:h-48 md:w-48" />

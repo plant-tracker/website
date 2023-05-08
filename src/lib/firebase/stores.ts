@@ -14,7 +14,6 @@ export function docStore<T>(firestore: Firestore, ref: string | DocumentReferenc
 	let unsubscribe: () => void;
 
 	if (!firestore || !globalThis.window) {
-		console.warn('Firestore is not initialized or not in browser');
 		const { subscribe } = writable(startWith);
 		return {
 			subscribe,
@@ -54,7 +53,6 @@ export function collectionGroupStore<T>(
 	let unsubscribe: () => void;
 
 	if (!firestore || !globalThis.window) {
-		console.warn('Firestore is not initialized or not in browser');
 		const { subscribe } = writable(startWith);
 		return {
 			subscribe,
@@ -95,7 +93,6 @@ export function collectionStore<T>(
 	let unsubscribe: () => void;
 
 	if (!firestore || !globalThis.window) {
-		console.warn('Firestore is not initialized or not in browser');
 		const { subscribe } = writable(startWith);
 		return {
 			subscribe,
@@ -129,7 +126,6 @@ export function userStore(auth: Auth) {
 	let unsubscribe: () => void;
 
 	if (!auth || !globalThis.window) {
-		console.warn('Auth is not initialized or not in browser');
 		const { subscribe } = writable(undefined);
 		return {
 			subscribe

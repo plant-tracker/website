@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Plant } from '$lib/types';
 	import { Avatar } from '@skeletonlabs/skeleton';
+	import placeholder from '$lib/assets/images/plant_placeholder.png';
 
 	export let id: string;
 	export let plant: Plant;
@@ -11,7 +12,7 @@
 	class="card card-hover flex flex-row items-center bg-neutral-100 shadow-lg rounded-lg overflow-hidden h-full"
 >
 	<div class="w-1/3 bg-cover bg-center p-3">
-		<Avatar src={plant.photo_url} width="w-full" rounded="rounded-full" />
+		<Avatar src={plant.photo_url || placeholder} width="w-full" rounded="rounded-full" />
 	</div>
 	<div class="w-2/3 p-4">
 		<h2 class="font-bold text-2xl mb-2">{plant.name}</h2>

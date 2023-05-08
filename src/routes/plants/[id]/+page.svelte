@@ -1,23 +1,100 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import PlantCard from '$lib/components/PlantCard.svelte';
 	import PlantPreferencesCard from '$lib/components/PlantPreferencesCard.svelte';
-	import { auth, docStore, firestore, userStore } from '$lib/firebase';
-	import type { Plant } from '$lib/types';
-	import { MenuAddLine, DeleteBinLine, Edit2Line } from 'svelte-remixicon';
+	import TaskCard from '$lib/components/TaskCard.svelte';
+	import TaskForm from '$lib/components/TaskForm.svelte';
+	import TipCard from '$lib/components/TipCard.svelte';
+	import { auth, collectionStore, docStore, firestore, userStore } from '$lib/firebase';
+	import { showToast } from '$lib/toastWrapper';
+	import type { Plant, Task } from '$lib/types';
+	import { AppBar, localStorageStore, modalStore } from '@skeletonlabs/skeleton';
+	import { collection, doc, increment, writeBatch } from 'firebase/firestore';
+	import { MenuAddLine, DeleteBinLine, Edit2Line, PlantLine } from 'svelte-remixicon';
+	import type { Writable } from 'svelte/store';
 
 	const id = $page.params.id;
 	const user = userStore(auth);
 	const plant = docStore<Plant>(firestore, `users/${$user?.uid}/plants/${id}`);
+	const tasks = collectionStore<Task>(firestore, `users/${$user?.uid}/plants/${id}/tasks`);
+
+	let taskForm = false;
+	let saving = false;
+
+	const enableTipsStore: Writable<boolean> = localStorageStore('enableTips', true);
+
+	const deletePlant = () =>
+		modalStore.trigger({
+			type: 'confirm',
+			title: 'Please Confirm',
+			body: `Are you sure you want to delete ${$plant?.name}?`,
+			response: (r) => (r ? deletePlantDoc(id) : null)
+		});
+
+	async function deletePlantDoc(id: string) {
+		const userRef = doc(firestore, `users/${$user?.uid}`);
+		const plantRef = doc(firestore, `users/${$user?.uid}/plants/${id}`);
+		const batch = writeBatch(firestore);
+
+		batch.delete(plantRef);
+		batch.update(userRef, { total_plants: increment(-1) });
+
+		await batch.commit();
+
+		showToast('Plant deleted successfully.', 'success');
+
+		goto('/plants');
+	}
+
+	async function saveTask(taskFormData: any) {
+		let batch = writeBatch(firestore);
+		const userDocRef = doc(firestore, `users/${$user?.uid}`);
+		saving = true;
+
+		try {
+			const newTaskDocRef = doc(collection(firestore, `users/${$user?.uid}/plants/${id}/tasks`));
+			batch.set(newTaskDocRef, { ...taskFormData.detail });
+			batch.set(userDocRef, { total_tasks: increment(1) }, { merge: true });
+
+			await batch.commit();
+			showToast('Task saved successfully.', 'success');
+			taskForm = false;
+		} catch (firebaseError: any) {
+			showToast(`Error saving task: ${firebaseError.message}`, 'error');
+		}
+		saving = false;
+	}
+
+	async function deleteTask(task: any) {
+		const userDocRef = doc(firestore, `users/${$user?.uid}`);
+		const taskDocRef = doc(firestore, `users/${$user?.uid}/plants/${id}/tasks/${task.detail.id}`);
+		const batch = writeBatch(firestore);
+
+		batch.delete(taskDocRef);
+		batch.update(userDocRef, { total_tasks: increment(-1) });
+
+		await batch.commit();
+		showToast('Task saved successfully.', 'success');
+	}
 </script>
 
+<AppBar class="sticky top-0 z-30">
+	<svelte:fragment slot="lead"><PlantLine class="h-8 w-8 md:h-12 md:w-12" /></svelte:fragment>
+	<h3>Plant information</h3>
+</AppBar>
 <div class="container mx-auto max-w-screen-xl p-4 md:p-10">
 	<div class="flex flex-col sm:flex-row justify-center flex-wrap gap-10">
 		<div class="flex flex-col gap-3 flex-1">
 			<h3>General</h3>
 			{#if $plant}
-				<PlantCard {id} plant={$plant} />
+				<div>
+					<PlantCard {id} plant={$plant} />
+				</div>
 				<span> Creation date: {$plant.created.toDate().toDateString()}</span>
+				{#if $enableTipsStore}
+					<TipCard tipType={$plant.type} />
+				{/if}
 				<div class="flex flex-col gap-2">
 					<h4>Preferences</h4>
 					<PlantPreferencesCard plant={$plant} />
@@ -25,11 +102,11 @@
 				<div class="flex flex-col gap-2">
 					<h4>Actions</h4>
 					<div class="flex flex-wrap gap-3">
-						<button type="button" class="btn variant-filled flex-1">
+						<a href="{id}/edit" class="btn variant-filled flex-1">
 							<span><Edit2Line class="h-6 w-6" /></span>
 							<span>Edit plant</span>
-						</button>
-						<button type="button" class="btn variant-filled flex-1">
+						</a>
+						<button type="button" class="btn variant-filled flex-1" on:click={deletePlant}>
 							<span><DeleteBinLine class="h-6 w-6" /></span>
 							<span>Delete plant</span>
 						</button>
@@ -43,10 +120,21 @@
 		</div>
 		<div class="flex flex-col gap-3 flex-1">
 			<h3>Tasks</h3>
-			<button type="button" class="btn variant-filled">
-				<span><MenuAddLine class="h-6 w-6" /></span>
-				<span>Add task</span>
-			</button>
+			{#if taskForm}
+				<TaskForm
+					on:cancelButtonclick={() => (taskForm = false)}
+					on:saveButtonclick={saveTask}
+					{saving}
+				/>
+			{:else}
+				<button type="button" class="btn variant-filled" on:click={() => (taskForm = true)}>
+					<span><MenuAddLine class="h-6 w-6" /></span>
+					<span>Add task</span>
+				</button>
+			{/if}
+			{#each $tasks as task}
+				<TaskCard {task} on:deleteButtonClick={deleteTask} />
+			{/each}
 		</div>
 	</div>
 </div>
