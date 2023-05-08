@@ -30,7 +30,7 @@
 								>Plant Tracker</span
 							>
 						</h1>
-						<span>Cultivate companion</span>
+						<span>Root for your plants and watch them grow!</span>
 					</div>
 				</div>
 			</div>

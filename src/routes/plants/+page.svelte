@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { AppBar } from '@skeletonlabs/skeleton';
-	import { AddBoxFill, AddBoxLine, PlantLine, PulseLine } from 'svelte-remixicon';
+	import { AddBoxLine, PlantLine } from 'svelte-remixicon';
 	import type { Plant } from '$lib/types';
 	import { collectionStore, userStore, auth, firestore } from '$lib/firebase';
 	import PlantCard from '$lib/components/PlantCard.svelte';
-	import logo_sad from '$lib/assets/vectors/logo_sad.svg';
 
 	const user = userStore(auth);
 	const userPlants = collectionStore<Plant>(firestore, `users/${$user?.uid}/plants`);
@@ -48,20 +47,5 @@
 				<PlantCard id={plant.id} {plant} />
 			{/each}
 		</div>
-	{:else if $userPlants.length === 0}
-		<div class="card flex flex-row p-4 gap-2">
-			<img alt="Smiling Planti" src={logo_sad} class="w-16 h-16" />
-			<div class="flex flex-col gap-2 w-full">
-				<h4>You don't have any plants yet.</h4>
-				<div class="flex flex-col gap-2">
-					<a href="/plants/add" class="btn variant-filled-primary">
-						<AddBoxFill class="h-6 w-6" />
-						<span>Add new plant!</span>
-					</a>
-				</div>
-			</div>
-		</div>
-	{:else}
-		Loading plants...
 	{/if}
 </div>
