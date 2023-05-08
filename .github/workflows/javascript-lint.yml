@@ -29,8 +29,8 @@ jobs:
 
       - name: Sync Submodules
         run: |
-          git submodule sync --recursive
           git submodule update --init --recursive
+          git submodule sync --recursive
 
       - name: Cache dependencies
         uses: actions/cache@v3
