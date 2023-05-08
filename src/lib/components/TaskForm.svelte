@@ -1,13 +1,5 @@
 <script lang="ts">
-	import {
-		DropLine,
-		BardLine,
-		ScissorsLine,
-		PlantLine,
-		BubbleChartLine,
-		Save2Line,
-		ForbidLine
-	} from 'svelte-remixicon';
+	import { Save2Line, ForbidLine } from 'svelte-remixicon';
 	import { createEventDispatcher } from 'svelte';
 	import TimeInput from './form/fields/TimeInput.svelte';
 	import TextInput from './form/fields/TextInput.svelte';

@@ -10,7 +10,7 @@
 	import { showToast } from '$lib/toastWrapper';
 	import type { Plant, Task } from '$lib/types';
 	import { AppBar, localStorageStore, modalStore } from '@skeletonlabs/skeleton';
-	import { collection, deleteDoc, doc, increment, writeBatch } from 'firebase/firestore';
+	import { collection, doc, increment, writeBatch } from 'firebase/firestore';
 	import { MenuAddLine, DeleteBinLine, Edit2Line, PlantLine } from 'svelte-remixicon';
 	import type { Writable } from 'svelte/store';
 

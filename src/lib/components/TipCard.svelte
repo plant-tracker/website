@@ -1,6 +1,6 @@
 <script lang="ts">
 	import logo_smile from '$lib/assets/vectors/logo_smile.svg';
-	export let tipType: string = 'other';
+	export let tipType = 'other';
 	import typesJson from '$lib/assets/plant_types.json';
 
 	interface PlantTypeInfo {

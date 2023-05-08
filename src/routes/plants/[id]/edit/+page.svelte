@@ -2,7 +2,6 @@
 	import { page } from '$app/stores';
 	import PlantForm from '$lib/components/PlantForm.svelte';
 	import { auth, docStore, firestore, userStore } from '$lib/firebase';
-	import { showToast } from '$lib/toastWrapper';
 	import type { Plant } from '$lib/types';
 	import { AppBar } from '@skeletonlabs/skeleton';
 	import { PlantLine } from 'svelte-remixicon';

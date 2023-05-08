@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { AppBar } from '@skeletonlabs/skeleton';
-	import { AddBoxLine, PlantLine } from 'svelte-remixicon';
+	import { AddBoxFill, AddBoxLine, PlantLine, PulseLine } from 'svelte-remixicon';
 	import type { Plant } from '$lib/types';
 	import { collectionStore, userStore, auth, firestore } from '$lib/firebase';
 	import PlantCard from '$lib/components/PlantCard.svelte';
+	import logo_sad from '$lib/assets/vectors/logo_sad.svg';
 
 	const user = userStore(auth);
 	const userPlants = collectionStore<Plant>(firestore, `users/${$user?.uid}/plants`);
@@ -31,19 +32,36 @@
 </AppBar>
 
 <div class="container mx-auto max-w-screen-lg p-4 md:p-10">
-	<div class="pb-3">
-		<button on:click={() => (filteredPlants = $userPlants)} class="btn btn-md variant-filled">
-			All
-		</button>
-		{#each uniquePlantTypes as plantType}
-			<button on:click={() => filterPlants(plantType)} class="btn btn-md mr-2 mb-2">
-				{plantType}
+	{#if $userPlants.length !== 0}
+		<div class="pb-3">
+			<button on:click={() => (filteredPlants = $userPlants)} class="btn btn-md variant-filled">
+				All
 			</button>
-		{/each}
-	</div>
-	<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-center items-center">
-		{#each filteredPlants as plant (plant.id)}
-			<PlantCard id={plant.id} {plant} />
-		{/each}
-	</div>
+			{#each uniquePlantTypes as plantType}
+				<button on:click={() => filterPlants(plantType)} class="btn btn-md mr-2 mb-2">
+					{plantType}
+				</button>
+			{/each}
+		</div>
+		<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-center items-center">
+			{#each filteredPlants as plant (plant.id)}
+				<PlantCard id={plant.id} {plant} />
+			{/each}
+		</div>
+	{:else if $userPlants.length === 0}
+		<div class="card flex flex-row p-4 gap-2">
+			<img alt="Smiling Planti" src={logo_sad} class="w-16 h-16" />
+			<div class="flex flex-col gap-2 w-full">
+				<h4>You don't have any plants yet.</h4>
+				<div class="flex flex-col gap-2">
+					<a href="/plants/add" class="btn variant-filled-primary">
+						<AddBoxFill class="h-6 w-6" />
+						<span>Add new plant!</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	{:else}
+		Loading plants...
+	{/if}
 </div>

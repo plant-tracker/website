@@ -1,22 +1,12 @@
 <script lang="ts">
 	import NotificationCard from '$lib/components/NotificationCard.svelte';
-	import TipCard from '$lib/components/TipCard.svelte';
 	import { auth, collectionStore, docStore, firestore, userStore } from '$lib/firebase';
 	import { Avatar } from '@skeletonlabs/skeleton';
-	import logo_smile from '$lib/assets/vectors/logo_smile.svg';
 	import logo_shocked from '$lib/assets/vectors/logo_shocked.svg';
 
 	import logo from '$lib/assets/vectors/logo_smile.svg';
 
-	import {
-		AndroidFill,
-		AndroidLine,
-		MenuAddLine,
-		PlantLine,
-		TaskFill,
-		WindowsFill,
-		WindowsLine
-	} from 'svelte-remixicon';
+	import { AndroidFill, MenuAddLine, PlantLine, WindowsFill } from 'svelte-remixicon';
 	import type { Notification } from '$lib/types';
 
 	const user = userStore(auth);

@@ -1,11 +1,5 @@
 <script lang="ts">
-	import {
-		Calendar2Line,
-		DeleteBinLine,
-		DropLine,
-		SkipRightLine,
-		TimeLine
-	} from 'svelte-remixicon';
+	import { Calendar2Line, DeleteBinLine, DropLine, TimeLine } from 'svelte-remixicon';
 	import type { Task } from '$lib/types';
 	import { createEventDispatcher } from 'svelte';
 
