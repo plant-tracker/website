@@ -6,19 +6,22 @@
 	import TaskCard from '$lib/components/TaskCard.svelte';
 	import TaskForm from '$lib/components/TaskForm.svelte';
 	import TipCard from '$lib/components/TipCard.svelte';
-	import { auth, docStore, firestore, userStore } from '$lib/firebase';
+	import { auth, collectionStore, docStore, firestore, userStore } from '$lib/firebase';
 	import { showToast } from '$lib/toastWrapper';
-	import type { Plant } from '$lib/types';
+	import type { Plant, Task } from '$lib/types';
 	import { AppBar, localStorageStore, modalStore } from '@skeletonlabs/skeleton';
-	import { deleteDoc, doc, increment, writeBatch } from 'firebase/firestore';
+	import { collection, deleteDoc, doc, increment, writeBatch } from 'firebase/firestore';
 	import { MenuAddLine, DeleteBinLine, Edit2Line, PlantLine } from 'svelte-remixicon';
 	import type { Writable } from 'svelte/store';
 
 	const id = $page.params.id;
 	const user = userStore(auth);
 	const plant = docStore<Plant>(firestore, `users/${$user?.uid}/plants/${id}`);
+	const tasks = collectionStore<Task>(firestore, `users/${$user?.uid}/plants/${id}/tasks`);
 
 	let taskForm = false;
+	let saving = false;
+
 	const enableTipsStore: Writable<boolean> = localStorageStore('enableTips', true);
 
 	const deletePlant = () =>
@@ -42,6 +45,37 @@
 		showToast('Plant deleted successfully.', 'success');
 
 		goto('/plants');
+	}
+
+	async function saveTask(taskFormData: any) {
+		let batch = writeBatch(firestore);
+		const userDocRef = doc(firestore, `users/${$user?.uid}`);
+		saving = true;
+
+		try {
+			const newTaskDocRef = doc(collection(firestore, `users/${$user?.uid}/plants/${id}/tasks`));
+			batch.set(newTaskDocRef, { ...taskFormData.detail });
+			batch.set(userDocRef, { total_tasks: increment(1) }, { merge: true });
+
+			await batch.commit();
+			showToast('Task saved successfully.', 'success');
+			taskForm = false;
+		} catch (firebaseError: any) {
+			showToast(`Error saving task: ${firebaseError.message}`, 'error');
+		}
+		saving = false;
+	}
+
+	async function deleteTask(task: any) {
+		const userDocRef = doc(firestore, `users/${$user?.uid}`);
+		const taskDocRef = doc(firestore, `users/${$user?.uid}/plants/${id}/tasks/${task.detail.id}`);
+		const batch = writeBatch(firestore);
+
+		batch.delete(taskDocRef);
+		batch.update(userDocRef, { total_tasks: increment(-1) });
+
+		await batch.commit();
+		showToast('Task saved successfully.', 'success');
 	}
 </script>
 
@@ -87,14 +121,20 @@
 		<div class="flex flex-col gap-3 flex-1">
 			<h3>Tasks</h3>
 			{#if taskForm}
-				<TaskForm on:cancelButtonclick={() => (taskForm = false)} />
+				<TaskForm
+					on:cancelButtonclick={() => (taskForm = false)}
+					on:saveButtonclick={saveTask}
+					{saving}
+				/>
 			{:else}
 				<button type="button" class="btn variant-filled" on:click={() => (taskForm = true)}>
 					<span><MenuAddLine class="h-6 w-6" /></span>
 					<span>Add task</span>
 				</button>
 			{/if}
-			<TaskCard />
+			{#each $tasks as task}
+				<TaskCard {task} on:deleteButtonClick={deleteTask} />
+			{/each}
 		</div>
 	</div>
 </div>

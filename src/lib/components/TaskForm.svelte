@@ -17,24 +17,40 @@
 	import NumberInput from './form/fields/NumberInput.svelte';
 	import { TaskIntervalValidator } from './form/validators/taskInterval';
 	import { taskTypes } from '$lib/types/taskTypes';
+	import { showToast } from '$lib/toastWrapper';
 
 	const dispatch = createEventDispatcher();
+	export let saving = false;
 
 	function cancelEvent() {
 		dispatch('cancelButtonclick');
 	}
 
+	function saveTask() {
+		try {
+			Object.keys(fieldValidators).forEach((key) => {
+				fieldValidators[key].forEach((validator) => {
+					validator.validate(taskFormData[key as keyof TaskFields]);
+				});
+			});
+		} catch (error: any) {
+			showToast('Please, fill in all fields.', 'error');
+			return;
+		}
+		dispatch('saveButtonclick', taskFormData);
+	}
+
 	class TaskFields {
-		type = 'watering';
+		name = 'watering';
 		description = '';
-		interval = 1;
+		frequency = 1;
 		time = '';
 	}
 
 	let fieldValidators: { [key: string]: Validator[] } = {
-		type: [new RequiredValidator()],
+		name: [new RequiredValidator()],
 		description: [new RequiredValidator()],
-		interval: [new TaskIntervalValidator()],
+		frequency: [new TaskIntervalValidator()],
 		time: [new RequiredValidator()]
 	};
 
@@ -45,9 +61,9 @@
 <div class="flex flex-col gap-3">
 	<Dropdown
 		label="Type"
-		icon={taskTypes[taskTypes.findIndex((taskType) => taskType.value === taskFormData.type)].icon}
+		icon={taskTypes[taskTypes.findIndex((taskType) => taskType.value === taskFormData.name)].icon}
 		options={taskTypes}
-		bind:select={taskFormData.type}
+		bind:select={taskFormData.name}
 	/>
 	<TextInput
 		label="Short description"
@@ -86,8 +102,8 @@
 						<NumberInput
 							label=""
 							placeholder="3"
-							bind:value={taskFormData.interval}
-							validators={fieldValidators.interval}
+							bind:value={taskFormData.frequency}
+							validators={fieldValidators.frequency}
 						/>
 						<span>days</span>
 					</div>
@@ -104,7 +120,7 @@
 		</div>
 	</div>
 	<div class="flex gap-3 flex-wrap pt-4">
-		<button type="button" class="btn variant-filled flex-1">
+		<button type="button" on:click={saveTask} disabled={saving} class="btn variant-filled flex-1">
 			<span><Save2Line class="h-6 w-6" /></span>
 			<span>Save task</span>
 		</button>

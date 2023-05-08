@@ -1,5 +1,5 @@
 export abstract class Validator {
-	validate(fieldValue: string): void {
+	validate(fieldValue: any): void {
 		const isNotValid = !this.passesValidationRule(fieldValue);
 
 		if (isNotValid) {
