@@ -19,22 +19,22 @@
 </script>
 
 <div class="container mx-auto max-w-screen-xl p-4 md:p-10">
-	<div class="flex gap-10 flex-col lg:flex-row">
-		<div class="w-full flex flex-col gap-6 justify-center">
-			<div class="flex justify-center">
-				<div class="flex flex-row gap-4 items-center">
-					<img alt="Plant Tracker logo" src={logo} class="h-32 w-32 md:h-48 md:w-48" />
-					<div class="flex flex-col">
-						<h1 class="text-4xl font-bold">
-							<span
-								class="bg-gradient-to-br from-teal-300 to-cyan-600 bg-clip-text text-transparent box-decoration-clone"
-								>Plant Tracker</span
-							>
-						</h1>
-						<span>Keep calm and plant on.</span>
-					</div>
-				</div>
+	<div class="flex justify-center">
+		<div class="flex flex-row gap-4 items-center">
+			<img alt="Plant Tracker logo" src={logo} class="h-32 w-32 md:h-48 md:w-48" />
+			<div class="flex flex-col">
+				<h1 class="text-4xl font-bold">
+					<span
+						class="bg-gradient-to-br from-teal-300 to-cyan-600 bg-clip-text text-transparent box-decoration-clone"
+						>Plant Tracker</span
+					>
+				</h1>
+				<span>Keep calm and plant on.</span>
 			</div>
+		</div>
+	</div>
+	<div class="flex gap-10 flex-col lg:flex-row pt-10">
+		<div class="w-full flex flex-col gap-6 justify-center">
 			<div class="flex gap-5 items-center">
 				<Avatar src={$user?.photoURL || placeholder} width="w-24" rounded="rounded-full" />
 				<div class="flex flex-col">
