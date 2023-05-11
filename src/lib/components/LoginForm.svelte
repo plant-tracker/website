@@ -4,8 +4,7 @@
 	import {
 		GoogleAuthProvider,
 		createUserWithEmailAndPassword,
-		signInWithPopup,
-		signOut
+		signInWithPopup
 	} from 'firebase/auth';
 	import { GoogleFill, AndroidFill, LoginBoxLine, WindowsFill } from 'svelte-remixicon';
 	import TextInput from './form/fields/TextInput.svelte';

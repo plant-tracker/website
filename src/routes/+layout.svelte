@@ -21,7 +21,6 @@
 		AndroidFill
 	} from 'svelte-remixicon';
 	import Icon from '$lib/components/AppRailIcon.svelte';
-	import logo from '$lib/assets/icons/logo.png';
 	import logo_smile from '$lib/assets/vectors/logo_smile.svg';
 	import { userStore, auth } from '$lib/firebase';
 	import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
@@ -72,12 +71,14 @@
 		<slot />
 	</AppShell>
 {:else}
-	<div class="container h-full mx-auto flex flex-col gap-8 justify-center items-center">
-		{#if $user === undefined}
-			<PlantiLoading />
-		{:else}
-			<LoginForm />
-		{/if}
-		<LightSwitch class="hidden" />
-	</div>
+	<AppShell>
+		<div class="container h-full mx-auto flex flex-col gap-8 justify-center items-center">
+			{#if $user === undefined}
+				<PlantiLoading />
+			{:else}
+				<LoginForm />
+			{/if}
+			<LightSwitch class="hidden" />
+		</div>
+	</AppShell>
 {/if}
