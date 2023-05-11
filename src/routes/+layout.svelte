@@ -30,6 +30,7 @@
 	import { onMount } from 'svelte';
 	import PlantiLoading from '$lib/components/PlantiLoading.svelte';
 	import Notification from '$lib/components/Notification.svelte';
+	import LoginForm from '$lib/components/LoginForm.svelte';
 
 	const user = userStore(auth);
 
@@ -75,27 +76,7 @@
 		{#if $user === undefined}
 			<PlantiLoading />
 		{:else}
-			<div class="flex flex-row gap-4 items-center">
-				<img alt="Plant Tracker logo" src={logo} class="h-32 w-32 md:h-48 md:w-48" />
-				<h1 class="text-4xl font-bold">Plant Tracker</h1>
-			</div>
-			<button
-				type="button"
-				on:click={() => signInWithPopup(auth, new GoogleAuthProvider())}
-				class="btn btn-lg variant-filled"
-			>
-				<span><GoogleFill /></span>
-				<span>Login with Google</span>
-			</button>
-			<span>or</span>
-			<a
-				href="https://github.com/plant-tracker/mobile/releases"
-				target="_blank"
-				class="btn btn-lg variant-filled"
-			>
-				<span><AndroidFill /></span>
-				<span>Download Android app</span>
-			</a>
+			<LoginForm />
 		{/if}
 		<LightSwitch class="hidden" />
 	</div>

@@ -5,6 +5,7 @@
 	export let validators: Validator[];
 	export let value: string;
 	export let placeholder: string;
+	export let type: 'text' | 'password' | 'email' = 'text';
 
 	$: {
 		value, (errorMessage = '');
@@ -25,14 +26,21 @@
 
 <label class="label">
 	<span>{label}</span>
-	<input
-		class="input"
-		type="text"
-		bind:value
-		on:input={validate}
-		on:blur={validate}
-		{placeholder}
-	/>
+	{#if type === 'password'}
+		<input class="input" type="password" bind:value on:change={validate} {placeholder} />
+	{:else if type === 'email'}
+		<input class="input" type="email" bind:value on:change={validate} {placeholder} />
+	{:else}
+		<input
+			class="input"
+			type="text"
+			bind:value
+			on:input={validate}
+			on:blur={validate}
+			{placeholder}
+		/>
+	{/if}
+
 	{#if errorMessage}
 		<p class="text-error-500 text-xs">{errorMessage}</p>
 	{/if}

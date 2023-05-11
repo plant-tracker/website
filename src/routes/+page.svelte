@@ -3,6 +3,7 @@
 	import { auth, collectionStore, docStore, firestore, userStore } from '$lib/firebase';
 	import { Avatar } from '@skeletonlabs/skeleton';
 	import logo_shocked from '$lib/assets/vectors/logo_shocked.svg';
+	import placeholder from '$lib/assets/images/plant_placeholder.png';
 
 	import logo from '$lib/assets/vectors/logo_smile.svg';
 
@@ -35,10 +36,10 @@
 				</div>
 			</div>
 			<div class="flex gap-5 items-center">
-				<Avatar src={$user?.photoURL} width="w-24" rounded="rounded-full" />
+				<Avatar src={$user?.photoURL || placeholder} width="w-24" rounded="rounded-full" />
 				<div class="flex flex-col">
 					<h1>Hello,</h1>
-					<h3>{$user?.displayName}</h3>
+					<h3>{$user?.displayName ?? 'Plant Lover'}</h3>
 				</div>
 			</div>
 			<h2>Statistics</h2>
