@@ -4,6 +4,7 @@
 	import type { Plant } from '$lib/types';
 	import { collectionStore, userStore, auth, firestore } from '$lib/firebase';
 	import PlantCard from '$lib/components/PlantCard.svelte';
+	import { plantTypes } from '$lib/types/plantTypes';
 
 	const user = userStore(auth);
 	const userPlants = collectionStore<Plant>(firestore, `users/${$user?.uid}/plants`);
@@ -38,7 +39,7 @@
 			</button>
 			{#each uniquePlantTypes as plantType}
 				<button on:click={() => filterPlants(plantType)} class="btn btn-md mr-2 mb-2">
-					{plantType}
+					{plantTypes.find((type) => type.value === plantType)?.label ?? plantType}
 				</button>
 			{/each}
 		</div>

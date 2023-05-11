@@ -11,6 +11,7 @@
 	import { Timestamp, collection, doc, increment, updateDoc, writeBatch } from 'firebase/firestore';
 	import { auth, firestore, userStore } from '$lib/firebase';
 	import { goto } from '$app/navigation';
+	import { plantTypes } from '$lib/types/plantTypes';
 
 	export let plant: Plant | undefined = undefined;
 	const user = userStore(auth);
@@ -28,17 +29,6 @@
 	}
 
 	let plantFormData: PlantFields = plant ? { ...plant } : new PlantFields();
-
-	const plantTypes = [
-		{ value: 'cactus', label: '🌵 Cactus' },
-		{ value: 'succulent', label: '🌿 Succulent' },
-		{ value: 'herb', label: '🌱 Herb' },
-		{ value: 'tree', label: '🌲 Tree' },
-		{ value: 'flower', label: '🌹 Flower' },
-		{ value: 'bonsai', label: '🌳 Bonsai' },
-		{ value: 'fern', label: '🌿 Fern' },
-		{ value: 'other', label: '🌼 Other' }
-	];
 
 	function reset() {
 		plantFormData = plant ? { ...plant } : new PlantFields();
